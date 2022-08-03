@@ -1,6 +1,8 @@
 <%@ page contentType="text/html;charset=utf-8"%>
 <%@ page import="java.sql.DriverManager" %>
 <%@ page import="java.sql.Connection" %>
+<%@ page import="java.sql.PreparedStatement" %>
+<%@ page import="java.sql.ResultSet" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,8 +26,23 @@
 	if(con==null){
 		out.print("접속실패");
 	}else{
-		out.print("성공");	
+		out.print("성공<br>");	
+		
+		//쿼리문
+		PreparedStatement pstmt=null;//인터페이스
+		String sql="SELECT * FROM dept";
+		pstmt = con.prepareStatement(sql);//(SQL문)이 시점에 메모리에 올라옴 
+		//resultSet 으로 반환 => oracle표를 통으로 넣을 수 있는 객체 ,처음에는 커서가 밖에 빠져있는데 커서를 이동해야 행단위로 조작이 가능
+		ResultSet rs = pstmt.executeQuery();//쿼리문 실행 
+		//커서 조작
+		rs.next();//커서 한칸 전진
+		rs.next();
+		rs.next();
+		rs.next();
+		String loc = rs.getString("loc");
+		out.print(loc);
 	}
+
 		
 	%>
 </body>
