@@ -35,15 +35,35 @@
 		//resultSet 으로 반환 => oracle표를 통으로 넣을 수 있는 객체 ,처음에는 커서가 밖에 빠져있는데 커서를 이동해야 행단위로 조작이 가능
 		ResultSet rs = pstmt.executeQuery();//쿼리문 실행 
 		//커서 조작
-		rs.next();//커서 한칸 전진
-		rs.next();
-		rs.next();
-		rs.next();
-		String loc = rs.getString("loc");
-		out.print(loc);
-	}
+		//rs.next();//커서 한칸 전진
+		//String loc = rs.getString("loc");
+		//out.print(loc);
 
-		
+		//전체 출력
+		//out.print("<table border='1px'>");
+		//while(rs.next()){
+		//out.print("<tr>");
+		//out.print("<td>"+rs.getString("loc")+"</td>");
+		//out.print("</tr>");
+	//	}
+//		out.print("</tabel>");
+
+		//표 전체 출력
+		out.print("<table border='1px'>");
+		while(rs.next()){
+			out.print("<tr>");
+			out.print("<td>"+rs.getInt("deptno")+"</td>");
+			out.print("<td>"+rs.getString("dname")+"</td>");
+			out.print("<td>"+rs.getString("loc")+"</td>");
+			out.print("</tr>");
+		}
+		out.print("</tabel>");
+
+
+	}
+		if(con!=null){
+			con.close();
+		}	
 	%>
 </body>
 </html>
