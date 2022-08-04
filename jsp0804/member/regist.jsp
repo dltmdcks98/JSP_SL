@@ -25,6 +25,9 @@
 	String social1			= request.getParameter("social1");
 	String social2			= request.getParameter("social2");
 	String gender			= request.getParameter("gender");
+	//취미는 파라미터가 배열로 되어 있으므로, 배열로 받아야한다.
+	String[] hobby		= request.getParameterValues("hobby");
+	out.print("취미 수 "+hobby.length);
 	//직접 입력한 이메일 서버가 있다면, 그걸 우선해주고, 없다면 select박스 값을넣는다.
 	String email=null;
 	//email = mail_id
@@ -84,7 +87,37 @@
 	int result = pstmt.executeUpdate();//DML 수행 메소드 
 	if(result==0){out.print("입력실패");
 	}else out.print("입력성공");
+	
+	//member 테이블에 레코드가 입력된 시점에 pk인 member_id를 가져와야한다.
+	//접속을 할때 세션이 일어나는데 시퀀스에서 curVal을 사용하면 최근에 세션내에 일어난 시퀀스를 가져온다.
+	//MAX()문은 위험 : dbms는 다중 사용자 서버이므로, 동시 사용시 데이터의 일관성이 깨짐
+	sql="SELECT seq_member.currval AS member_id FROM dual";
+	PreparedStatement pstmt2 = con.prepareStatement(sql);
+	ResultSet rs = pstmt2.executeQuery();
+	int member_id=0;
+	if(rs.next()){//next()호출시 true라면 
+		member_id = rs.getInt("member_id");
+	}
 
+	//hobby테이블에 취미 넣기 
+	PreparedStatement pstmt3=null;
+	for(int i=0; i<hobby.length;i++){
+		sql ="INSERT INTO hobby(hobby_id,member_id,hobby_name) VALUES(seq_hobby.nextval,?,?)";
+		//PreparedStatement는 쿼리문 하나당 하나씩 생성 
+		
+		
+		pstmt3=con.prepareStatement(sql);
+		pstmt3.setInt(1,member_id);
+		pstmt3.setString(2,hobby[i]);
+		
+		pstmt3.executeUpdate();
+	 }
+	
+	if(rs!=null)rs.close();
+	if(pstmt2!=null)pstmt2.close();
+	if(pstmt3!=null)pstmt3.close();
 	if(pstmt!=null)pstmt.close();
 	if(con!=null)con.close();
 %>
+
+회원가입 완료
