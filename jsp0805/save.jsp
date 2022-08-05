@@ -1,10 +1,22 @@
 <%@ page contentType="text/html;charset=utf-8"%>
 <%@ page import ="com.oreilly.servlet.MultipartRequest" %>
 <%@ page import ="java.sql.*" %>
-<%!															//테이블명
-	String url ="jdbc:mysql://localhost:3306/javastudy";
+<%@ page import ="java.io.File" %>
+<%!															//테이블명    데이터 입력 한글 
+	String url ="jdbc:mysql://localhost:3306/javastudy?useUnicode=true&characterEncoding=utf8";
 	String user="root";
 	String password="1234";
+	
+	//클래스의 멤버 변수는 컴파일러에 의해 자동 초기화 된다 숫자영역 :0 문자 : null
+	Connection con;
+	PreparedStatement pstmt;
+	ResultSet rs;
+//확장자를 추출하는 메서드
+	public String getExt(String path)
+	{
+		return path.substring(path.lastIndexOf(".")+1,path.length());
+
+	}
 %>
 <%
 //클라이언트가 보낸 파일을 서버에 업로드 처리하려면, 많은 로직을 수반되므로 누군가 만들어놓은 라이브러리를 이용한다,cos.jar
@@ -30,16 +42,73 @@ application 객체를 이용*/
 	String title = multi.getParameter("title");
 	String spot = multi.getParameter("spot");
 	String detail = multi.getParameter("detail");	
-	
+	//업로드한 파일의 원래 이미지명 얻기
+	File file = multi.getFile("myfile");//javaSE의 file을 반환 
+	String filename = file.getName();
+	out.print("업로드한 파일"+filename+"<br>");
+
+
+
 	//파일의 이름을 아직 바꾸지 않았으므로 insert를 먼저 진행한 후 그 쿼리로부터 생성된 레코드의 primary key를 이용하여 파일명을 사용
 	/*1)드라이버 로드 2) 접속 3)쿼리 수행 4)자원해제*/ 
 	//1)드라이버 로드
 	Class.forName("com.mysql.jdbc.Driver");
 	//2)접속
-	Connection con = DriverManager.getConnection(url,user,password);
+	con = DriverManager.getConnection(url,user,password);
 	if(con==null){
 		out.print("연결 실패");
 	}else out.print("성공");
+	
 
+	//업로드 = insert+update 모두 성공해야 성공으로 간주하는 트랜잭션 상황 
+	//즉 세부 업무가 2개짜리 트랜잭션
+	con.setAutoCommit(false);//insert문을 수행한다고 하더라도 트랜잭션이 확정되지 않는다.
+
+	try{
+		String sql = "INSERT INTO gallery(title,spot,detail) VALUES(?,?,?)";
+		pstmt= con.prepareStatement(sql);
+		pstmt.setString(1,title);
+		pstmt.setString(2,spot);
+		pstmt.setString(3,detail);
+
+		int result =pstmt.executeUpdate();//DML의 경우
+		if(result ==0){
+			out.print("등록실패");
+		}else{
+			out.print("등록성공");
+				//파일명 바꾸기 연습
+				//	file.renameTo(바꾸게될 파일)
+				/*현재 이 Connection에서 일으킨 가장 마지막 Primary key를 얻어오는 방법 MAX는 다른 사용자 값도 가져옴*/
+				sql="SELECT last_insert_id() AS gallery_id";
+				pstmt=con.prepareStatement(sql);
+				rs = pstmt.executeQuery();//SELECT 문 실행시
+
+				int gallery_id=0;
+				if(rs.next()){
+					gallery_id = rs.getInt("gallery_id");
+				}
+				String lastName = gallery_id+"."+getExt(filename);
+				boolean result2=file.renameTo(new File(saveDir+"/"+lastName));
+				if(result2){
+					//filename 컬럼 업데이트
+					sql ="UPDATE gallery SET filename=? WHERE gallery_id=?";
+					pstmt = con.prepareStatement(sql);
+					pstmt.setString(1,lastName);
+					pstmt.setInt(2,gallery_id);
+					pstmt.executeUpdate();
+
+				}
+			}
+		con.commit();//트랜잭션 성공
+	}catch(SQLException e){
+		con.rollback();//트랜잭션 실패
+	}finally{
+		con.setAutoCommit(true);//원상복귀
+	}
+	
+	if(rs!=null)rs.close();
+	if(pstmt!=null)pstmt.close();
 	if(con!=null)con.close();
+	response.sendRedirect("/list.jsp");
+
 %>
