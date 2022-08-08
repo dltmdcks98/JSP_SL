@@ -4,14 +4,14 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script>
-	var x = 5;
-</script>
 </head>
 <body>
-<%
-  int x= 10;
-%>
-this is my test jsp
+	<table width="200px" border="1px">
+		<%for(int i=1; i<=9; i++){ %>
+		<tr>
+			<td><%="2*"+i+"="+(2*i) %></td>
+		</tr>
+		<%} %>
+	</table>
 </body>
 </html>
