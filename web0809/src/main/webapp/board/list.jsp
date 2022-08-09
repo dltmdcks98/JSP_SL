@@ -44,7 +44,7 @@
 		<tr>
 		<!-- no에 primary키는 쓰지 않음 이빨 빠짐 순서가 이상하게 설정됨 -->
 			<td>No</td>
-			<td><%=rs.getString("title")%></td>
+			<td><a href="/board/content.jsp?board_id=<%= rs.getInt("board_id")%>"><%=rs.getString("title")%></a></td>
 			<td><%=rs.getString("writer")%></td>
 			<td><%=rs.getString("regdate")%></td>
 			<td><%=rs.getInt("hit")%></td>
