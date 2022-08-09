@@ -69,6 +69,8 @@ public class RegistServlet extends HttpServlet {
 				out.print("등록실패<br>");
 			}else {
 				out.print("등록성공 <br>");
+				//톰켓이 응답정보를 클라이언트에게 보낼때 해당 클라이언트의 브라우저로 하여긂 재접속할 주소를 기입 바로 이동하는게 아님 
+				response.sendRedirect("/board/list.jsp");
 			}
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
