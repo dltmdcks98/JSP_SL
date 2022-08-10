@@ -1,6 +1,7 @@
 package com.aca.web0810.notice;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -18,7 +19,8 @@ public class RegistServlet extends HttpServlet{
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		
+		response.setContentType("text/html;charset=utf-8");
+		PrintWriter out = response.getWriter();
 		//클라이언트가 전송해온 파라미터 받기
 		request.setCharacterEncoding("utf-8");
 		String title 		= request.getParameter("title");
@@ -46,8 +48,17 @@ public class RegistServlet extends HttpServlet{
 			 pstmt.setString(2, writer);
 			 pstmt.setString(3, content);
 			 
-			 pstmt.executeUpdate();//실행
+			 int result = pstmt.executeUpdate();//실행
 			 
+			 out.print("<script>");
+			 if(result==0) {
+				 out.print("alret('등록실패');");
+				 out.print("history.back();");
+			 }else {
+				 out.print("alert('등록성공');");
+				 out.print("location.href='/notice/list.jsp';");//밑에 문장들도 실행됨
+			 }
+			 out.print("</script>");
 		} catch (NamingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -55,12 +66,13 @@ public class RegistServlet extends HttpServlet{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
-			if(pstmt!=null) {}
+			if(pstmt!=null) {
 			try {
 				pstmt.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			}
 			}
 			if(con!=null) {
 				try {

@@ -1,0 +1,58 @@
+package com.aca.web0810.model;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+//이 클래스는 웹 기반 뿐만 아니라 스탠다드 기반에서도 공용으로 쓸 수 있는 수준으로 정의해놓자
+//재사용을 위해서 
+
+public class BoardManager {
+	String url="jdbc:oracle:thin:@localhost:1521:XE";
+	String user="java";
+	String password="1234";
+	//레코드 넣기 
+	public void insert(String title, String writer, String content) {
+		
+		Connection con = null;
+		PreparedStatement pstmt=null;
+		
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			con=DriverManager.getConnection(url,user,password);
+			String sql = "INSERT INTO board(board_id,title,writer,content)VALUES(seq_board.nextval,?,?,?)";
+			pstmt=con.prepareStatement(sql);
+
+			pstmt.setString(1, title);
+			pstmt.setString(2, writer);
+			pstmt.setString(3, content);
+			int result = pstmt.executeUpdate();
+			
+		}catch (ClassNotFoundException e) {
+			// TODO: handle exception
+		}catch (SQLException e) {
+			// TODO: handle exception
+		}finally {
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		
+		
+	}
+}
