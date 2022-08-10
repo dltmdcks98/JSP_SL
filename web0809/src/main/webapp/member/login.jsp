@@ -44,12 +44,13 @@
 			3. map : key-value 형태로 되어있는 데이터 
 		
 		*/ 
-		session.setAttribute("user_id", "scoot");
-		session.setAttribute("pass", "1234");
-		
+		session.setAttribute("user_id", rs.getString("user_id"));
+		session.setAttribute("pass", rs.getString("pass"));
+		session.setAttribute("regdate",rs.getString("regdate"));
 		out.print("당신의 정보 <br>");
 		out.print("아이디 :" + session.getAttribute("user_id")+"<br>");
 		out.print("비번 :" + session.getAttribute("pass")+"<br>");
+		out.print("가입일 :" + session.getAttribute("regdate")+"<br>");
 	}else{
 		out.print("<script>");
 		out.print("alert('회원정보가 올바르지 않습니다.');");
@@ -58,6 +59,9 @@
 	}
 
 	
-	
+//자원해제
+if(rs!=null)rs.close();	
+if(pstmt!=null)rs.close();	
+if(con!=null)rs.close();	
 	
 %>

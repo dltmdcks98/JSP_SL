@@ -52,7 +52,10 @@
 		 });
 	});
  function edit(){
-	 
+	 //수정 폼을 서버에 전송 
+	 form1.action="/board/edit";
+	 form1.method="post";
+	 form1.submit();
  }
  function del(){
 	 //get 방식으로 삭제를 요청
@@ -61,7 +64,8 @@
 </script>
 </head>
 <body style="background:yellow">
-	<form>
+	<form name = "form1">
+	<input type ="hidden" name ="board_id" value = "<%=rs.getInt("board_id") %>">
 	<table width="60%" border="1px" align="center">
 		<tr>
 			<td>제목</td>
