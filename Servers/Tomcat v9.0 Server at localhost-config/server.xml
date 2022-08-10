@@ -35,6 +35,14 @@
 			factory="org.apache.catalina.users.MemoryUserDatabaseFactory"
 			name="UserDatabase" pathname="conf/tomcat-users.xml"
 			type="org.apache.catalina.UserDatabase" />
+
+		<!-- 이 웹 어플리케이션이 사용하게 될 Connection pool을 등록 이와 같이 java코드가 아닌, 외부의 xml과 
+			같은 자원에 정보를 이용하는 방법을 javaSE에서는 JNDI로 지원 -->
+		<Resource name="jdbc/myoracle" auth="Container"
+			type="javax.sql.DataSource"
+			driverClassName="oracle.jdbc.driver.OracleDriver"
+			url="jdbc:oracle:thin:@localhost:1521:XE" username="java"
+			password="1234" maxActive="20" maxIdle="10" maxWait="3000" />
 	</GlobalNamingResources>
 
 	<!-- A "Service" is a collection of one or more "Connectors" that share 
@@ -119,8 +127,12 @@
 
 				<Context docBase="web0808" path="/web0808" reloadable="true"
 					source="org.eclipse.jst.jee.server:web0808" />
-				<Context docBase="web0809" path="/" reloadable="true"
+				<Context docBase="web0809" path="/web0809" reloadable="true"
 					source="org.eclipse.jst.jee.server:web0809" />
+				<Context docBase="web0810" path="/" reloadable="true"
+					source="org.eclipse.jst.jee.server:web0810">
+
+				</Context>
 			</Host>
 		</Engine>
 	</Service>
