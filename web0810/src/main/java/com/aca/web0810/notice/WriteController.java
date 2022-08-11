@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 //중의적인 클래스를 이용한 웹용  
 
+import com.aca.web0810.domain.Board;
 import com.aca.web0810.model.BoardManager;
 public class WriteController extends HttpServlet{
 	BoardManager boardManager;
@@ -37,7 +38,12 @@ public class WriteController extends HttpServlet{
 		String content = request.getParameter("content");
 		
 		//넘어온 파라미터를 이용해서 DB에 insert하되, 직접이 아닌 중립적 객체를 이용할 것임
-		int result = boardManager.insert(title, writer, content);
+		Board board = new Board();
+		board.setTitle(title);
+		board.setWriter(writer);
+		board.setContent(content);
+		
+		int result = boardManager.insert(board);
 		out.print("<script>");
 		 if(result==0) {
 			 out.print("alret('등록실패');");
