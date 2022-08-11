@@ -11,14 +11,15 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import com.aca.web0810.model.BoardManager;
+import com.aca.web0810.domain.Board;
+import com.aca.web0810.model.BoardDAO;
 
 /*웹 기반이 아닌 독립 실행형 기반인 GUI모드로 등록폼을 정의*/
 public class FormWin extends JFrame {
 	JButton bt;// has a 관계 : 객체가 다른 객체를 멤버로 보유한 관계
 	JTextField t_title, t_writer;
 	JTextArea area;
-	BoardManager boardManager;
+	BoardDAO boardManager;
 	
 	public FormWin() {
 		
@@ -27,7 +28,7 @@ public class FormWin extends JFrame {
 		area = new JTextArea(10,23);//row,col
 		area.setBackground(Color.yellow);
 		bt = new JButton("등록");
-		boardManager = new BoardManager();
+		boardManager = new BoardDAO();
 		//레이아웃 스타일 명시
 		this.setLayout(new FlowLayout());//일렬로 배치되는 레이아웃
 		add(t_title);
@@ -55,7 +56,12 @@ public class FormWin extends JFrame {
 		String title = t_title.getText();
 		String writer = t_writer.getText();
 		String content = area.getText();
-		int result = boardManager.insert(title,writer,content);
+		Board board = new Board();//게시물 마다 새로 생성
+		board.setTitle(title);
+		board.setWriter(writer);
+		board.setContent(content);
+	
+		int result = boardManager.insert(board);
 		if(result==0) {
 			//parent => 디자인 적으로 바깥쪽 즉 요소를 포함하고 있는 외부 상속개념에서의 부모는 super를 사용
 			JOptionPane.showMessageDialog(this, "등록실패");

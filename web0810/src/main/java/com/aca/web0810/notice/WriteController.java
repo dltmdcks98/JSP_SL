@@ -17,14 +17,14 @@ import javax.sql.DataSource;
 //중의적인 클래스를 이용한 웹용  
 
 import com.aca.web0810.domain.Board;
-import com.aca.web0810.model.BoardManager;
+import com.aca.web0810.model.BoardDAO;
 public class WriteController extends HttpServlet{
-	BoardManager boardManager;
+	BoardDAO boardManager;
 	
 	//이 서블릿 클래스가 최초의 접속자에 의해 인스턴스화 될떄 딱 한번 호출되는 생명주기 메서드
 	@Override
 	public void init() throws ServletException {
-		boardManager = new BoardManager();
+		boardManager = new BoardDAO();
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
