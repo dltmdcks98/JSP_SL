@@ -13,10 +13,11 @@ public class BoardManager {
 	String user="java";
 	String password="1234";
 	//레코드 넣기 
-	public void insert(String title, String writer, String content) {
+	public int insert(String title, String writer, String content) {
 		
 		Connection con = null;
 		PreparedStatement pstmt=null;
+		int result=0;//멤벼변수가 아닌 지역변수는 컴파일러가 초기화해주지 않음, 반드시 초기화 해야함 
 		
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -27,8 +28,12 @@ public class BoardManager {
 			pstmt.setString(1, title);
 			pstmt.setString(2, writer);
 			pstmt.setString(3, content);
-			int result = pstmt.executeUpdate();
 			
+			result= pstmt.executeUpdate();
+
+		
+		
+		
 		}catch (ClassNotFoundException e) {
 			// TODO: handle exception
 		}catch (SQLException e) {
@@ -53,6 +58,6 @@ public class BoardManager {
 		}
 		
 		
-		
+		return result;
 	}
 }

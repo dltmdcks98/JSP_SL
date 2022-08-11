@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -54,7 +55,13 @@ public class FormWin extends JFrame {
 		String title = t_title.getText();
 		String writer = t_writer.getText();
 		String content = area.getText();
-		boardManager.insert(title,writer,content);
+		int result = boardManager.insert(title,writer,content);
+		if(result==0) {
+			//parent => 디자인 적으로 바깥쪽 즉 요소를 포함하고 있는 외부 상속개념에서의 부모는 super를 사용
+			JOptionPane.showMessageDialog(this, "등록실패");
+		}else {
+			JOptionPane.showMessageDialog(this, "등록성공");
+		}
 	}
 	public static void main(String[] args) {
 		new FormWin();
