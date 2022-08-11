@@ -1,4 +1,15 @@
+<%@page import="com.aca.web0810.domain.Board"%>
+<%@page import="java.sql.ResultSet"%>
+<%@page import="com.aca.web0810.model.BoardDAO"%>
+<%@page import="java.util.List"%>
 <%@ page contentType = "text/html;charset=UTF-8" %>
+<%
+	//직접 쿼리문을 수행하지 말고, 이미만들어놓은 DAO를 이용
+	BoardDAO boardDAO= new BoardDAO();
+	List<Board> boardList = boardDAO.selectAll();
+	
+	
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,22 +49,16 @@ addEventListener("load",function(){
 			<th width ="10%">regdate</th>
 			<th width="5%">hit</th>
 		</tr>
-		<%for(int i=1; i<=10; i++){ %>
+		<%for(int i=0; i<boardList.size();i++){ %>
+		<% Board board = boardList.get(i);%>
 		<tr>
 			<td>Jill</td>
-			<td>Smith</td>
-			<td>50</td>
-			<td>50</td>
-			<td>50</td>
+			<td><%=board.getTitle() %></td>
+			<td><%=board.getWriter()%></td>
+			<td><%=board.getRegdate().substring(0,10) %></td>
+			<td><%=board.getHit() %></td>
 		</tr>
 		<%} %>
-		<tr>
-			<td>Eve</td>
-			<td>Jackson</td>
-			<td>94</td>
-			<td>94</td>
-			<td>94</td>
-		</tr>
 		<tr>
 			<td colspan="5">
 				<button>글등록</button>

@@ -3,7 +3,10 @@ package com.aca.web0810.model;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.aca.web0810.domain.Board;
 
@@ -64,4 +67,70 @@ public class BoardDAO {
 		
 		return result;
 	}
+	//게시물 목록 가져오기 
+	public List selectAll() {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		List list=null;
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			con=DriverManager.getConnection(url,user,password);
+			String sql ="SELECT * FROM board ORDER BY board_id DESC";
+			pstmt=con.prepareStatement(sql);
+			rs= pstmt.executeQuery();
+			
+			/*rs는  finally문에서 con,pstmt와 함께 곧 닫히게 되므로 반환할 수 없다.
+			 * 해결책 = rs를 대신할 객체를 이용 
+			 * 테이블의 레코드 1건은 DTO의 인스턴스 1개로 대체
+			 * 테이블의 레코드 순서는 => LIST로 대체*/
+			 list = new ArrayList();
+			while(rs.next()) {
+				Board board = new Board();
+				board.setBoard_id(rs.getInt("board_id"));
+				board.setTitle(rs.getString("title"));
+				board.setWriter(rs.getString("writer"));
+				board.setContent(rs.getString("content"));
+				board.setRegdate(rs.getString("regdate"));
+				board.setHit(rs.getInt("hit"));
+				
+				list.add(board);
+			}
+
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return list;
+	}
+	
+	
 }
