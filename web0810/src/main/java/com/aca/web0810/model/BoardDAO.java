@@ -16,37 +16,35 @@ import com.aca.web0810.domain.Board;
  * */
 
 public class BoardDAO {
-	String url="jdbc:oracle:thin:@localhost:1521:XE";
-	String user="java";
-	String password="1234";
-	//레코드 넣기 
+	String url = "jdbc:oracle:thin:@localhost:1521:XE";
+	String user = "java";
+	String password = "1234";
+
+	// 레코드 넣기
 	public int insert(Board board) {
-		
+
 		Connection con = null;
-		PreparedStatement pstmt=null;
-		int result=0;//멤벼변수가 아닌 지역변수는 컴파일러가 초기화해주지 않음, 반드시 초기화 해야함 
-		
+		PreparedStatement pstmt = null;
+		int result = 0;// 멤벼변수가 아닌 지역변수는 컴파일러가 초기화해주지 않음, 반드시 초기화 해야함
+
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
-			con=DriverManager.getConnection(url,user,password);
+			con = DriverManager.getConnection(url, user, password);
 			String sql = "INSERT INTO board(board_id,title,writer,content)VALUES(seq_board.nextval,?,?,?)";
-			pstmt=con.prepareStatement(sql);
+			pstmt = con.prepareStatement(sql);
 
 			pstmt.setString(1, board.getTitle());
 			pstmt.setString(2, board.getWriter());
 			pstmt.setString(3, board.getContent());
-			
-			result= pstmt.executeUpdate();
 
-		
-		
-		
-		}catch (ClassNotFoundException e) {
+			result = pstmt.executeUpdate();
+
+		} catch (ClassNotFoundException e) {
 			// TODO: handle exception
-		}catch (SQLException e) {
+		} catch (SQLException e) {
 			// TODO: handle exception
-		}finally {
-			if(pstmt!=null) {
+		} finally {
+			if (pstmt != null) {
 				try {
 					pstmt.close();
 				} catch (SQLException e) {
@@ -54,7 +52,7 @@ public class BoardDAO {
 					e.printStackTrace();
 				}
 			}
-			if(con!=null) {
+			if (con != null) {
 				try {
 					con.close();
 				} catch (SQLException e) {
@@ -63,29 +61,29 @@ public class BoardDAO {
 				}
 			}
 		}
-		
-		
+
 		return result;
 	}
-	//게시물 목록 가져오기 
+
+	// 게시물 목록 가져오기
 	public List selectAll() {
-		Connection con=null;
-		PreparedStatement pstmt=null;
-		ResultSet rs=null;
-		List list=null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List list = null;
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
-			con=DriverManager.getConnection(url,user,password);
-			String sql ="SELECT * FROM board ORDER BY board_id DESC";
-			pstmt=con.prepareStatement(sql);
-			rs= pstmt.executeQuery();
-			
-			/*rs는  finally문에서 con,pstmt와 함께 곧 닫히게 되므로 반환할 수 없다.
-			 * 해결책 = rs를 대신할 객체를 이용 
-			 * 테이블의 레코드 1건은 DTO의 인스턴스 1개로 대체
-			 * 테이블의 레코드 순서는 => LIST로 대체*/
-			 list = new ArrayList();
-			while(rs.next()) {
+			con = DriverManager.getConnection(url, user, password);
+			String sql = "SELECT * FROM board ORDER BY board_id DESC";
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+
+			/*
+			 * rs는 finally문에서 con,pstmt와 함께 곧 닫히게 되므로 반환할 수 없다. 해결책 = rs를 대신할 객체를 이용 테이블의
+			 * 레코드 1건은 DTO의 인스턴스 1개로 대체 테이블의 레코드 순서는 => LIST로 대체
+			 */
+			list = new ArrayList();
+			while (rs.next()) {
 				Board board = new Board();
 				board.setBoard_id(rs.getInt("board_id"));
 				board.setTitle(rs.getString("title"));
@@ -93,7 +91,7 @@ public class BoardDAO {
 				board.setContent(rs.getString("content"));
 				board.setRegdate(rs.getString("regdate"));
 				board.setHit(rs.getInt("hit"));
-				
+
 				list.add(board);
 			}
 
@@ -103,8 +101,8 @@ public class BoardDAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally {
-			if(rs!=null) {
+		} finally {
+			if (rs != null) {
 				try {
 					rs.close();
 				} catch (SQLException e) {
@@ -112,7 +110,7 @@ public class BoardDAO {
 					e.printStackTrace();
 				}
 			}
-			if(pstmt!=null) {
+			if (pstmt != null) {
 				try {
 					pstmt.close();
 				} catch (SQLException e) {
@@ -120,7 +118,7 @@ public class BoardDAO {
 					e.printStackTrace();
 				}
 			}
-			if(con!=null) {
+			if (con != null) {
 				try {
 					con.close();
 				} catch (SQLException e) {
@@ -131,6 +129,165 @@ public class BoardDAO {
 		}
 		return list;
 	}
-	
-	
+
+	// 레코드 1건 가져오기
+	public Board select(int board_id) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Board board = null;
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			con = DriverManager.getConnection(url, user, password);
+
+			String sql = "SELECT * FROM board WHERE board_id=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, board_id);
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {// 레코드가 있을 때만
+				board = new Board();
+				board.setBoard_id(rs.getInt("board_id"));
+				board.setTitle(rs.getString("title"));
+				board.setWriter(rs.getString("writer"));
+				board.setContent(rs.getString("content"));
+				board.setRegdate(rs.getString("regdate"));
+				board.setHit(rs.getInt("hit"));
+			}
+
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+
+		return board;
+	}
+
+	// 한건 삭제
+	public int delete(int board_id) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int result = 0;
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			con = DriverManager.getConnection(url, user, password);
+			String sql = "DELETE board WHERE board_id=?";
+
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, board_id);
+			result = pstmt.executeUpdate();
+
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+		}
+		return result;
+	}
+
+	// 수정
+	public int update(Board board) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int result = 0;
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			con = DriverManager.getConnection(url, user, password);
+			String sql = "UPDATE board SET title=?, writer=?,content=? WHERE board_id=?";
+
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, board.getTitle());
+			pstmt.setString(2, board.getWriter());
+			pstmt.setString(3, board.getContent());
+			pstmt.setInt(4, board.getBoard_id());
+			result = pstmt.executeUpdate();
+
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return result;
+	}
 }

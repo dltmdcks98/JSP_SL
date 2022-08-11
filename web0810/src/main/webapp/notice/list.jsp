@@ -53,7 +53,7 @@ addEventListener("load",function(){
 		<% Board board = boardList.get(i);%>
 		<tr>
 			<td>Jill</td>
-			<td><%=board.getTitle() %></td>
+			<td><a href="/notice/content.jsp?board_id=<%=board.getBoard_id()%>"><%=board.getTitle() %></a></td>
 			<td><%=board.getWriter()%></td>
 			<td><%=board.getRegdate().substring(0,10) %></td>
 			<td><%=board.getHit() %></td>
