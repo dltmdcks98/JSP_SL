@@ -15,7 +15,7 @@ if(result==0){
 	out.print("history.back();");
 }else{
 	out.print("alert('수정 성공');");
-	out.print("location.href='/notice/list.jsp';");
+	out.print("location.href='/notice/content.jsp?board_id="+board.getBoard_id()+"';");
 }
 out.print("</script>");
 %>
