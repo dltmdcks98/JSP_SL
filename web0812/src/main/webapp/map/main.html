@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>구글맵을 연동한 SPA(Single Page Application)</title>
+<style>
+    #wrapper{
+        width: 1800px;
+        height: 800px;
+        background: yellow;
+        margin: auto;
+        overflow: hidden;/*자식이 float으로 떠있으면 무조건 넣어야함*/
+    }
+    #input-area{
+        width: 200px;
+        height: 100%;
+        background: pink;
+        float:left;
+    }
+    #map{
+        width: 1600px;
+        height: 100%;
+        background: gray;
+        float: left;
+    }
+</style>
+</head>
+<body>
+	<div id="wrapper">
+		<div id="input-area">입력폼</div>
+		<div id="map">맵</div>
+	</div>
+</body>
+</html>
