@@ -1,11 +1,45 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<script>
+		function loadData() {
+			/*아래와 같은 링크방식으로 서버에 데이터를 요청하면, 전체페이지가 로드되어 
+			새로고침이 발생한다. 따라서 현재 화면을 쥬지한 상태에서 백그라운드에서 서버에 데이터를 요청하는 ajax를 이용하면 
+			서버로부터 받은 데이터를 이용하여 화면의 일부에 적용할 수 있다. 
+			*/
+			// location.href="/test/data.jsp"
+
+			//ajax를 구현하기 위한 핵심객체가 XMLHttpRequest객체
+			 var xhttp = new XMLHttpRequest();
+			 console.log("xhttp is",xhttp);
+
+			 xhttp.onload=function(){
+				console.log(this.responseText);//서버로 부터 받은 응답 데이터
+				document.querySelector("textarea").append(this.responseText);
+			 }
+			 xhttp.open("GET","/test/data.jsp",true);//비동기로 가져올때는 true
+			 xhttp.send();//기존 실행부는 순서대로 실행되는데 스레드의 형태처럼 다른 처리기가 서버로 요청을 보내고 원래의 실행부는 아래로 떨어진다.
+
+			 console.log("hahhahahhahahah");
+		}
+
+		window.addEventListener("load", function () {
+			//이 문서내의 모든 tag에 대해 DOM이 준비된 상태
+			document.querySelector("button").addEventListener("click", function () {
+				loadData();
+			});
+
+		});
+
+	</script>
 </head>
+
 <body>
 	<button>불러오기</button>
 	<textarea style="width:200px;height:150;"></textarea>
 </body>
+
 </html>
