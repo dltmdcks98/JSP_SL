@@ -108,10 +108,10 @@
 
 				<Context docBase="web0808" path="/web0808" reloadable="true" source="org.eclipse.jst.jee.server:web0808"/>
 				<Context docBase="web0809" path="/web0809" reloadable="true" source="org.eclipse.jst.jee.server:web0809"/>
-				<Context docBase="web0810" path="/" reloadable="true" source="org.eclipse.jst.jee.server:web0810">
+				<Context docBase="web0810" path="/web0810" reloadable="true" source="org.eclipse.jst.jee.server:web0810">
 
 				</Context>
-			<Context docBase="web0811" path="/web0811" reloadable="true" source="org.eclipse.jst.jee.server:web0811"/></Host>
+			<Context docBase="web0811" path="/web0811" reloadable="true" source="org.eclipse.jst.jee.server:web0811"/><Context docBase="web0812" path="/" reloadable="true" source="org.eclipse.jst.jee.server:web0812"/></Host>
 		</Engine>
 	</Service>
 </Server>
