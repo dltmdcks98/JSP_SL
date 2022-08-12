@@ -19,7 +19,7 @@ public class HotSpotDAO {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			con = DriverManager.getConnection(url,user,pass);
-			String sql = "insert into hotspot(lati, longi, icon, content values(?,?,?,?)";
+			String sql = "insert into hotspot(lati, longi, icon, content) values(?,?,?,?)";
 			pstmt= con.prepareStatement(sql);
 			pstmt.setFloat(1, hotSpot.getLati());
 			pstmt.setFloat(2, hotSpot.getLongi());

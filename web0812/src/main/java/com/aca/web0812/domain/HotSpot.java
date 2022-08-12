@@ -2,16 +2,16 @@ package com.aca.web0812.domain;
 
 //로직 작성용이 아닌 오직 데이터를 담아서 전달하기 위한 객체
 public class HotSpot {
-	private int hotspot_id;
+	private int hotspot;
 	private float lati;
 	private float longi;
 	private String icon;
 	private String content;
 	public int getHotspot_id() {
-		return hotspot_id;
+		return hotspot;
 	}
 	public void setHotspot_id(int hotspot_id) {
-		this.hotspot_id = hotspot_id;
+		this.hotspot = hotspot;
 	}
 	public float getLati() {
 		return lati;
