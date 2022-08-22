@@ -10,4 +10,14 @@
   	<servlet-name>registServlet</servlet-name>
   	<url-pattern>/map/regist</url-pattern>
   	</servlet-mapping>
+  	
+  	  <servlet>
+  	<servlet-name>listServlet</servlet-name>
+  	<servlet-class>com.aca.web0812.map.ListServlet</servlet-class>
+  	</servlet>
+  	
+  	<servlet-mapping>
+  	<servlet-name>listServlet</servlet-name>
+  	<url-pattern>/map/list</url-pattern>
+  	</servlet-mapping>
 </web-app>

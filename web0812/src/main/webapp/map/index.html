@@ -38,19 +38,18 @@ var map;//전역 변수로 선언
 	
 	//비동기방식으로 데이터 가져오기
 	function getList() {
-		/*
+		
 		var xhttp = new XMLHttpRequest();
 
 		xhttp.onreadystatechange = function() {
 			//요청이 도착했고(4), 서버가 에러없이 정상 응답한 경우(200)에만 
 			if (this.readyState == 4 && this.status == 200) {
-				console.log(xhttp.responseText);//서버가 보낸 컨텐츠 출력
+				console.log("서버로 부터 받은 메시지 :", xhttp.responseText);//서버가 보낸 컨텐츠 출력
 			}
 		};
 		xhttp.open("GET", "/map/list");
 		xhttp.send();
-		 */
-		 showMarker();
+		showMarker();
 	}
 
 	//비동기 방식으로 post 요청 보내기 
@@ -120,8 +119,8 @@ var map;//전역 변수로 선언
 
 		//구글 맵 객체 생성 
 		map = new google.maps.Map(document.getElementById("map"), mapProp);
-		//맵이 만들어진 이후에
-		getList();//웹페이지를 열자마자 등록된 마커가 떠야하므로 
+		//맵이 만들어진 이후에웹페이지를 열자마자 등록된 마커가 떠야하므로
+		getList(); 
 	}
 </script>
 <style>

@@ -3,7 +3,10 @@ package com.aca.web0812.model;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.aca.web0812.domain.HotSpot;
 
@@ -51,6 +54,66 @@ public class HotSpotDAO {
 			}
 		}
 		return result;
+	}
+	
+	//목록 가져오기
+	public List selectAll() {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List list = new ArrayList();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			con = DriverManager.getConnection(url,user,pass);
+			String sql = "SELECT * FROM hotspot ORDER BY hotspot ASC";
+			pstmt= con.prepareStatement(sql);
+			rs= pstmt.executeQuery();
+			
+			while(rs.next()) {
+				//레코드 한건을 대체하기 위한 DTO 하나의 인스턴스 생성
+				HotSpot dto= new HotSpot();
+				dto.setHotspot_id(rs.getInt("hotspot"));
+				dto.setLati(rs.getFloat("lati"));
+				dto.setLongi(rs.getFloat("longi"));
+				dto.setIcon(rs.getString("icon"));
+				dto.setContent(rs.getString("content"));
+				
+				list.add(dto);//2차원 구조 생성
+			}
+			
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return list;
 	}
 
 }
