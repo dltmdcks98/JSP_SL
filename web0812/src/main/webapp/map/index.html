@@ -38,6 +38,12 @@ var map;//전역 변수로 선언
 		
 		//생성된 마커를 어느맵에 적용할지 맵의 레버런스 변수 
 		marker.setMap(map);
+		
+		var infowindow = new google.maps.InfoWindow({
+			  content:json.content
+		});
+
+		infowindow.open(map,marker);
 		}
 	}
 	
