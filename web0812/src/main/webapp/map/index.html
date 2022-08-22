@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script>
+        //마커로 사용할 이미지명을 동적으로 얻어오기    
+        function getImg() {
+            var icon = document.getElementById("icon");
+            var arr = ["1.webp", "2.png", "3.png", "4.png", "5.png"];
+            for (var i = 0; i < 5; i++) {
+                //없던 요소를 동적으로 만들때 
+                var op = document.createElement("option");
+                //생성된 옵션 요소를 select 요소에 자식으로 부착
+                op.text = arr[i];
+                op.value = arr[i];
+                icon.add(op);
+            }
+        }
+
+        //비동기 방식으로 post 요청 보내기 
+        function regist() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");//form 구성
+            //파라미터와 그 값 지정
+            var lati = document.getElementsByName("lati")[0];
+            var longi = document.getElementsByName("longi")[0];
+            var icon = document.getElementById("icon");
+            var content = document.getElementsByName("content")[0];
+
+            //send메소드 호출에 의해 비동기 전송이 발생 
+            //비동기 방식은 요청 후, 서버의 응답이 언제 올지 알수없다. 따라서 XMLHttpRequest객체는 각종 이벤트를 지원하는데 
+            xhttp.onreadystatechange = function () {
+                //요청이 도착했고(4), 서버가 에러없이 정상 응답한 경우(200)에만 
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("demo").innerHTML =
+                        alert("등록성공");
+                }
+            };
+            xhttp.send("lati=" + lati.value + "&longi=" + longi.value + "&icon=" + icon.value + "&content=" + content.value);
+
+        }
+
+        function init() {
+            getImg();
+
+            //select 상자에 이벤트 구현 
+            document.getElementById("icon").addEventListener("change", function () {
+                console.log(this.value);
+                //문서내의 preview라는 이미지 돔의 src를 교체
+                document.getElementById("preview").src = "./images/" + this.value;
+            });
+
+            //버튼 클릭이벤트 구현
+            document.querySelector("button").addEventListener("click", function () {
+                //비동기
+                //SPA(Single Page Application:하나짜리 페이지 프로그램  AJAX 기술로 제작된 페이지)
+                regist();
+            });
+        }
+    </script>
+    <style>
+        body {
+            margin: 0px;
+        }
+
+        #wrapper {
+            width: 100%;
+            height: 900px;
+            background-color: aqua;
+            overflow: hidden;
+        }
+
+        #input-area {
+            width: 15%;
+            height: 100%;
+            background-color: yellow;
+            float: left;
+
+        }
+
+        #input-area * {
+            width: 97%;
+        }
+
+        #preview {
+            height: 250px;
+        }
+
+        #map {
+            width: 85%;
+            height: 100%;
+            background-color: black;
+            float: left;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="input-area">
+            <input type="text" placeholder="위도" name="lati">
+            <input type="text" placeholder="경도" name="longi">
+            <select id="icon">
+                <option value="0">마커를 선택하세요</option>
+            </select>
+            <img id="preview">
+            <textarea rows="20" name="content"></textarea>
+            <button>등록</button>
+        </div>
+        <div id="map"></div>
+    </div>
+
+</body>
+
+</html>
+<script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA-ZrTVE4W9l0oYOCeCI5c92EqDuCb9Q9w&callback=init"></script>
