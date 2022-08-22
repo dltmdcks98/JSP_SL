@@ -45,7 +45,8 @@ public class RegistServlet extends HttpServlet {
 
 		//응답을 html로 보내지 마록, insert한 결과가 성공인지 실패인지 여부 메시지
 		//즉 복합된 결과를 보내고자할때는 xml이나 json이 많이 쓰임
-		response.setContentType("text/html;charset=utf-8");
+		//response.setContentType("text/html;charset=utf-8");
+		response.setContentType("application/json;charset=utf-8");//json으로 응답
 		PrintWriter out= response.getWriter();
 		
 		//성공여부 코드, 메시지
@@ -54,7 +55,7 @@ public class RegistServlet extends HttpServlet {
 		String resData=null;
 		if(result==0) {
 		resData ="{";
-		resData+="\"code\":1,";
+		resData+="\"code\":0,";
 		resData+="\"msg\":\"데이터 등록 실패\"";
 		resData+="}";
 		}else {

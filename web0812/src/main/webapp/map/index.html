@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<title>Document</title>
+<script>
+var map;//전역 변수로 선언
+
+	//마커로 사용할 이미지명을 동적으로 얻어오기    
+	function getImg() {
+		var icon = document.getElementById("icon");
+		var arr = [ "1.webp", "2.png", "3.png", "4.png", "5.png" ];
+		for (var i = 0; i < 5; i++) {
+			//없던 요소를 동적으로 만들때 
+			var op = document.createElement("option");
+			//생성된 옵션 요소를 select 요소에 자식으로 부착
+			op.text = arr[i];
+			op.value = arr[i];
+			icon.add(op);
+		}
+	}
+	//마커 생성 및 정보 표시
+	function showMarker(){
+		
+		for(var i=0; i<5;i++){
+		//마커 객체 생성 
+		var marker = new google.maps.Marker({
+			position: new google.maps.LatLng(37.4758+i, 126.8818),
+			animation:google.maps.Animation.BOUNCE
+		});
+		
+		
+		//생성된 마커를 어느맵에 적용할지 맵의 레버런스 변수 
+		marker.setMap(map);
+		}
+	}
+	
+	//비동기방식으로 데이터 가져오기
+	function getList() {
+		/*
+		var xhttp = new XMLHttpRequest();
+
+		xhttp.onreadystatechange = function() {
+			//요청이 도착했고(4), 서버가 에러없이 정상 응답한 경우(200)에만 
+			if (this.readyState == 4 && this.status == 200) {
+				console.log(xhttp.responseText);//서버가 보낸 컨텐츠 출력
+			}
+		};
+		xhttp.open("GET", "/map/list");
+		xhttp.send();
+		 */
+		 showMarker();
+	}
+
+	//비동기 방식으로 post 요청 보내기 
+	function regist() {
+		var xhttp = new XMLHttpRequest();
+
+		//파라미터와 그 값 지정
+		var lati = document.getElementsByName("lati")[0];
+		var longi = document.getElementsByName("longi")[0];
+		var icon = document.getElementById("icon");
+		var content = document.getElementsByName("content")[0];
+
+		//send메소드 호출에 의해 비동기 전송이 발생 
+		//비동기 방식은 요청 후, 서버의 응답이 언제 올지 알수없다. 따라서 XMLHttpRequest객체는 각종 이벤트를 지원하는데 
+		xhttp.onreadystatechange = function() {
+			//요청이 도착했고(4), 서버가 에러없이 정상 응답한 경우(200)에만 
+			if (this.readyState == 4 && this.status == 200) {
+
+				// alert(xhttp.responseText);//서버가 보낸 컨텐츠 출력
+				//서버가 보낸 응답코드 분석
+				//서버가 보낸 데이터는 json 표기법을 준수한 문자열이다. js입장에선는 json객체는 아니다.
+				//따라서 문자열을 json 객체로 변환하려면, parse()를 이용
+				//console.log(xhttp.responseText, xhttp.responseText.code)json으로 보이지만, 문자열로 보낸거임
+				var obj = JSON.parse(xhttp.responseText);
+				console.log(xhttp.responseText, obj.code);//json으로 보이지만, 문자열로 보낸거임
+				if (obj.code == 1) {
+					alert("등록성공");
+					getList();
+				} else {
+					alert("등록실패")
+				}
+
+			}
+		};
+		xhttp.open("POST", "/map/regist");
+		xhttp.setRequestHeader("Content-type",
+				"application/x-www-form-urlencoded");//form 구성
+		xhttp.send("lati=" + lati.value + "&longi=" + longi.value + "&icon="
+				+ icon.value + "&content=" + content.value);
+
+	}
+
+	function init() {
+		getImg();
+		
+		//select 상자에 이벤트 구현 
+		document.getElementById("icon").addEventListener(
+				"change",
+				function() {
+					console.log(this.value);
+					//문서내의 preview라는 이미지 돔의 src를 교체
+					document.getElementById("preview").src = "/res/images/"
+							+ this.value;
+				});
+
+		//버튼 클릭이벤트 구현
+		document.querySelector("button").addEventListener("click", function() {
+			//비동기
+			//SPA(Single Page Application:하나짜리 페이지 프로그램  AJAX 기술로 제작된 페이지)
+			regist();
+		});
+
+		var mapProp = {
+			center : new google.maps.LatLng(37.4758, 126.8818),//카메라 중심점
+			zoom : 15,//카메라 배열 
+		};
+
+		//구글 맵 객체 생성 
+		map = new google.maps.Map(document.getElementById("map"), mapProp);
+		//맵이 만들어진 이후에
+		getList();//웹페이지를 열자마자 등록된 마커가 떠야하므로 
+	}
+</script>
+<style>
+body {
+	margin: 0px;
+}
+
+#wrapper {
+	width: 100%;
+	height: 900px;
+	background-color: aqua;
+	overflow: hidden;
+}
+
+#input-area {
+	width: 15%;
+	height: 100%;
+	background-color: yellow;
+	float: left;
+}
+
+#input-area * {
+	width: 97%;
+}
+
+#preview {
+	height: 250px;
+}
+
+#map {
+	width: 85%;
+	height: 100%;
+	background-color: black;
+	float: left;
+}
+</style>
+</head>
+
+<body>
+	<div id="wrapper">
+		<div id="input-area">
+			<input type="text" placeholder="위도" name="lati"> <input
+				type="text" placeholder="경도" name="longi"> <select id="icon">
+				<option value="0">마커를 선택하세요</option>
+			</select> <img id="preview">
+			<textarea rows="20" name="content"></textarea>
+			<button>등록</button>
+		</div>
+		<div id="map"></div>
+	</div>
+
+</body>
+
+</html>
+<script
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA-ZrTVE4W9l0oYOCeCI5c92EqDuCb9Q9w&callback=init"></script>
