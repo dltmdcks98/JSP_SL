@@ -40,7 +40,7 @@ public class RegistServlet extends HttpServlet {
 		hotSpot.setIcon(icon);
 		hotSpot.setContent(content);
 		
-		int result = hotSpotDAO.insert(hotSpot);
+		int result = hotSpotDAO.insert(hotSpot);//pk값
 		
 
 		//응답을 html로 보내지 마록, insert한 결과가 성공인지 실패인지 여부 메시지
@@ -59,9 +59,22 @@ public class RegistServlet extends HttpServlet {
 		resData+="\"msg\":\"데이터 등록 실패\"";
 		resData+="}";
 		}else {
+			//한건이 들어간 경우 이므로 그 레코드를 반환
+			HotSpot dto = hotSpotDAO.select(result);
 			resData ="{";
 			resData+="\"code\":1,";
-			resData+="\"msg\":\"데이터 등록 성공\"";
+			//resData+="\"msg\":\"데이터 등록 성공\"";
+			resData+="\"list\" : [";
+			
+			resData+="{";
+			resData+=" \"hotspot\" : "+dto.getHotspot_id()+",";
+			resData+="\"lati\":"+dto.getLati()+",";
+			resData+="\"longi\":"+dto.getLongi()+",";
+			resData+=" \"icon\": \""+dto.getIcon()+"\",";
+			resData+="\"content\" :\""+dto.getContent()+"\"";
+			resData+="}";
+			resData+="]";
+			
 			resData+="}";
 		}
 		out.print(resData);

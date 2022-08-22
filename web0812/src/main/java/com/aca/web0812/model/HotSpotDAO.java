@@ -18,6 +18,7 @@ public class HotSpotDAO {
 	public int insert(HotSpot hotSpot) {
 		Connection con = null;
 		PreparedStatement pstmt=null;
+		ResultSet rs = null;
 		int result =0;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -28,7 +29,15 @@ public class HotSpotDAO {
 			pstmt.setFloat(2, hotSpot.getLongi());
 			pstmt.setString(3, hotSpot.getIcon());
 			pstmt.setString(4, hotSpot.getContent());
-			result=pstmt.executeUpdate();
+			
+			result=pstmt.executeUpdate();//insert 쿼리 수행후 Connection이 닫히기 전에 insert에 의해 증가된 pk 얻어와야함
+			sql = "SELECT last_insert_id() AS hotspot";
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				result=rs.getInt("hotspot");
+				
+			}
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -36,6 +45,14 @@ public class HotSpotDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 			if(pstmt!=null) {
 				try {
 					pstmt.close();
@@ -115,5 +132,62 @@ public class HotSpotDAO {
 		}
 		return list;
 	}
-
+	//최근의 insert된 하나만 가져오기
+	//insert하는 것과 세션이 다르기때문에 last_insert_id가 인식이 안됨, connection이 다름
+	public HotSpot select(int hotspot) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs =null;
+		HotSpot dto=null;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			con = DriverManager.getConnection(url, user, pass);
+			String sql = "SELECT * FROM hotspot WHERE hotspot=?";//이런 함수가 잇음 Oracle 에서는 curval, 현재 나의 의해 증가된 pk값 가져오기 
+			pstmt=con.prepareStatement(sql);
+			pstmt.setInt(1, hotspot);
+			rs=pstmt.executeQuery();
+			if(rs.next()) {
+				
+				dto=new HotSpot();//레코드가 있을때만 DTO생성
+				dto.setHotspot_id(rs.getInt("hotspot"));
+				dto.setLati(rs.getFloat("lati"));
+				dto.setLongi(rs.getFloat("longi"));
+				dto.setIcon(rs.getString("icon"));
+				dto.setContent(rs.getString("content"));
+			}
+			
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return dto;
+	}
 }
