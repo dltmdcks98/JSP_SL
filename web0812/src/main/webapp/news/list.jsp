@@ -36,7 +36,7 @@ tr:nth-child(even) {
 			<td>Jill</td>
 			<td>Smith</td>
 			<td>50</td>
-		</tr>
+		</tr>a
 		<tr>
 			<td>Eve</td>
 			<td>Jackson</td>
