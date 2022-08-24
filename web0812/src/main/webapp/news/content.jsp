@@ -57,9 +57,20 @@ input[type=button]:hover {
 </style>
 <script>
 function regist(){
-	form1.action="/comments/regist";//댓글 등록 요청
-	form1.method="post";
-	form1.submit();
+	//비동기
+	var xhttp=new XMLHttpRequest();
+	
+	var detail = document.getElementsByName("detail")[0];//text자체
+	var author = document.getElementsByName("author")[0];//text자체
+	xhttp.onreadystatechange=function(){
+		if(this.readyState==4 && this.status==200){
+			console.log("서버가 보낸 json 문자열은",this.responseText);
+		}
+	}
+	xhttp.open("POST","/comments/regist");
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send("detail="+detail.value+"&author="+author.value);//파라미터명=값&파라미터명=값
+	
 }
 </script>
 </head>
