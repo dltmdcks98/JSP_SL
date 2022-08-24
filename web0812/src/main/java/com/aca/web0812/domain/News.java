@@ -6,6 +6,8 @@ public class News {
 	private String writer;
 	private String content;
 	private String regdate;
+	private int hit;
+	
 	public int getNews_id() {
 		return News_id;
 	}
@@ -35,6 +37,12 @@ public class News {
 	}
 	public void setRegdate(String regdate) {
 		this.regdate = regdate;
+	}
+	public int getHit() {
+		return hit;
+	}
+	public void setHit(int hit) {
+		this.hit = hit;
 	}
 	
 	

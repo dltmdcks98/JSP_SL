@@ -1,7 +1,15 @@
+<%@page import="java.util.List"%>
+<%@page import="com.aca.web0812.news.model.NewsDAO"%>
+<%@page import="com.aca.web0812.domain.News"%>
 <%@page import="javax.print.attribute.HashPrintRequestAttributeSet"%>
 <%@ page contentType="text/html;charset=UTF-8"%>
+<%!
+	NewsDAO newsDAO = new NewsDAO();
+%>
 <%
-	int totalRecord=80;  //모든 레코드 수
+	List<News> newsList = newsDAO.selectAll();
+
+	int totalRecord=newsList.size();  //모든 레코드 수
 	int pageSize=7;  //한 페이지당 보여질 레코드 수
 	int totalPage=(int)Math.ceil((float)totalRecord/pageSize);
 	int blockSize=7;  //한 블럭당 보여질 페이지 수

@@ -2,11 +2,10 @@ package com.aca.web0812.news.model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.aca.web0812.domain.News;
 import com.aca.web0812.pool.ConnectionManager;
@@ -21,7 +20,8 @@ public class NewsDAO {
 	ConnectionManager manager;//웹이건 응용이건 둘다 포함 할수 있는 객체
 	
 	public NewsDAO(){
-		manager = new PoolManager();//웹용으로 생성
+		//manager = new PoolManager();//웹용으로 생성 
+		manager = PoolManager.getInstance();//위의 코드를 싱글톤으로 받아옴
 		
 	}
 	//Create
@@ -50,8 +50,35 @@ public class NewsDAO {
 		return result;
 	}
 	//Read
-	public void selectAll() {
+	public List selectAll() {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs=null;
+		List<News> list = new ArrayList<News>();
+		
+		con=manager.getConnection();
 		String sql="select * from news order by news_id desc";
+		try {
+			pstmt=con.prepareStatement(sql);
+			rs=pstmt.executeQuery();
+			while(rs.next()) {
+				News news = new News();
+				news.setNews_id(rs.getInt("news_id"));
+				news.setTitle(rs.getString("title"));
+				news.setWriter(rs.getString("writer"));
+				news.setContent(rs.getString("content"));
+				news.setRegdate(rs.getString("regdate"));
+				news.setHit(rs.getInt("hit"));
+				
+				list.add(news);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			manager.freeConnection(con,pstmt,rs);
+		}
+		return list;
 	}
 	public void select() {
 		String sql="select * from news where news_id=?";

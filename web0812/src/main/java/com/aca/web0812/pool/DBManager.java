@@ -11,9 +11,17 @@ import javax.sql.DataSource;
 
 //독립실행형에서 커넥션을 관리하기 위한 객체
 public class DBManager extends ConnectionManager{
+	private static DBManager instance = new DBManager();//클래스 자체 소속인데 클래스가 로드 될때 생성됨
+	
 	String url="jdbc:oracle:thin:@localhost:1521:XE";
 	String user="java";
 	String password="1234";
+	
+	private DBManager() {//싱글톤 패턴으로 사용
+	}
+	public static DBManager getInstance() {
+		return instance;
+	}
 	
 	@Override
 	public Connection getConnection() {

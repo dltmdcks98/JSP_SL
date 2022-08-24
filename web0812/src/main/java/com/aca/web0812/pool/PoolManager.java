@@ -11,11 +11,13 @@ import javax.sql.DataSource;
 
 //웹에서의 커넥션 풀로부터 커넥션을 얻기위한 전담 객체
 public class PoolManager extends ConnectionManager{
+	private static PoolManager instance;
+	
 	InitialContext context;//JNDI 검색 객체
 	DataSource ds;
 	
 	
-	public PoolManager() {
+	private PoolManager() {
 		try {
 			context=new InitialContext();
 			ds = (DataSource) context.lookup("java:comp/env/jdbc/myoracle");//검색시작
@@ -24,6 +26,13 @@ public class PoolManager extends ConnectionManager{
 			e.printStackTrace();
 		}
 
+	}
+	
+	public static PoolManager getInstance() {
+		if(instance==null) {
+			instance=new PoolManager();
+		}
+		return instance;
 	}
 
 	@Override
