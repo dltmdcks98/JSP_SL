@@ -72,7 +72,7 @@ tr:nth-child(even) {
 		<%if(num<1)break; %>
 		<tr>
 			<td><%=num--%></td>
-			<td>Smith</td>
+			<td><%= %></td>
 			<td>50</td>
 			<td>50</td>
 			<td>50</td>

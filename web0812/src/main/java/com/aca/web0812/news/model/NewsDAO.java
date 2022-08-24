@@ -81,7 +81,14 @@ public class NewsDAO {
 		return list;
 	}
 	public void select() {
+		Connection con =null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<News> list= new ArrayList<News>();
+		
+		con = manager.getConnection();
 		String sql="select * from news where news_id=?";
+		
 	}
 	//update
 	public void update() {
