@@ -1,6 +1,7 @@
 package com.aca.web0812.news;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -8,9 +9,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.aca.web0812.domain.Comments;
+import com.aca.web0812.model.CommentsDAO;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /*댓글 등록 요청을 처리하는 서블릿*/
 public class CommentsRegist extends HttpServlet{
+	CommentsDAO commentsDAO = new CommentsDAO();
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
@@ -23,5 +28,17 @@ public class CommentsRegist extends HttpServlet{
 		comments.setAuthor(author);
 		
 		//DAO : DAO는 테이블 별로 1:1 대응
+		commentsDAO.insert(comments);
+		
+		//클라이언트가 비동기 방식으로 요청을 한다는 것은 전체 html 디자인을 바꾸는 것이 아니라 현재 페이지는 유지하되 
+		//오직 데이터면 주고 받기 위함
+		response.setContentType("text/html;charset=utf-8");
+		PrintWriter out = response.getWriter();
+		
+		//클라이언트에게 등록과 동시에 지금까지 누적된 댓글 목록을 보낸다.
+		//json표기를 문자열로 처리할 경우 너무 번거로우니 외부 라이브러리(GSON)를 이용한다.
+		Gson gson = new Gson();
+		String json =gson.toJson(comments);
+		out.print(json);
 	}
 }
