@@ -10,16 +10,17 @@
 	List<News> newsList = newsDAO.selectAll();
 
 	int totalRecord=newsList.size();  //모든 레코드 수
-	int pageSize=7;  //한 페이지당 보여질 레코드 수
+	int pageSize=10;  //한 페이지당 보여질 레코드 수
 	int totalPage=(int)Math.ceil((float)totalRecord/pageSize);
 	int blockSize=7;  //한 블럭당 보여질 페이지 수
 	int currentPage=1;
 	if(request.getParameter("currentPage")!=null){
 		currentPage=Integer.parseInt(request.getParameter("currentPage"));
 	}
-	int firstPage=blockSize*(int)(currentPage/(float)(blockSize+(float)0.001))+1;
+	int firstPage=currentPage-(currentPage-1)%blockSize;
 	int lastPage=firstPage+blockSize-1;
-	int num=totalRecord-pageSize*(currentPage-1);
+	int curPos=(currentPage-1)*pageSize;//페이지당 list의 시작 index
+	int num=totalRecord- curPos;//페이지당 시작 번호
 %>
 <%="totalRecord는 "+totalRecord+"<br>" %>
 <%="pageSize는 "+pageSize+"<br>" %>
@@ -70,12 +71,15 @@ tr:nth-child(even) {
 		페이징 처리는 결국 데이터에 대한 산수계산이므로, 개발자마다 본인 스스로 로직을 개발해야함 -->
 		<%for(int i =1; i<=pageSize; i++){%>
 		<%if(num<1)break; %>
+		<%
+			News news =newsList.get(curPos++);
+		%>
 		<tr>
 			<td><%=num--%></td>
-			<td><%= %></td>
-			<td>50</td>
-			<td>50</td>
-			<td>50</td>
+			<td><a href="/news/content.jsp"><%= news.getTitle() %></a></td>
+			<td><%= news.getWriter() %></td>
+			<td><%= news.getRegdate().substring(0,10) %></td>
+			<td><%= news.getHit() %></td>
 		</tr>
 		<%} %>
 		<tr>
