@@ -57,7 +57,7 @@ input[type=button]:hover {
 </style>
 <script>
 function regist(){
-	form1.action="/news/regist";
+	form1.action="/comments/regist";//댓글 등록 요청
 	form1.method="post";
 	form1.submit();
 }
@@ -78,9 +78,9 @@ function regist(){
   </form>
   
   <form name="form2">
-  	<input type="text" name="title" placeholder="댓글 내용" style="width:60%">
-  	<input type="text" name="title" placeholder="작성자" style ="width:10%">
-  	<input type="button" value="댓글등록">
+  	<input type="text" name="detail" placeholder="댓글 내용" style="width:60%">
+  	<input type="text" name="author" placeholder="작성자" style ="width:10%">
+  	<input type="button" value="댓글등록" onClick="regist()">
   </form>
   <!-- 댓글 목록 -->
   

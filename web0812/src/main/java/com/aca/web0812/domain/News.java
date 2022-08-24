@@ -7,7 +7,14 @@ public class News {
 	private String content;
 	private String regdate;
 	private int hit;
+	private int cnt; //댓글의 수를 담는 변수 
 	
+	public int getCnt() {
+		return cnt;
+	}
+	public void setCnt(int cnt) {
+		this.cnt = cnt;
+	}
 	public int getNews_id() {
 		return News_id;
 	}
