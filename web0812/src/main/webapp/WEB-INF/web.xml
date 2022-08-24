@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  <!-- 
   <display-name>web0812</display-name>
   	<servlet>
   	<servlet-name>registServlet</servlet-name>
@@ -30,5 +31,16 @@
   	<servlet-name>selectServlet</servlet-name>
   	<url-pattern>/map/select</url-pattern>
   	</servlet-mapping>
-  	
+  	 -->
+  	 
+  	<servlet>
+   <servlet-name>registServlet</servlet-name>
+   <servlet-class>com.aca.web0812.news.RegistServlet</servlet-class>
+   </servlet>
+   
+   
+   <servlet-mapping>
+      <servlet-name>registServlet</servlet-name>
+      <url-pattern>/news/regist</url-pattern>
+   </servlet-mapping>
 </web-app>
