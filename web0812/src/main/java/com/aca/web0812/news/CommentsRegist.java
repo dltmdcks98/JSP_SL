@@ -39,6 +39,6 @@ public class CommentsRegist extends HttpServlet{
 		//json표기를 문자열로 처리할 경우 너무 번거로우니 외부 라이브러리(GSON)를 이용한다.
 		Gson gson = new Gson();
 		String json =gson.toJson(comments);
-		out.print(json);
+		System.out.println(json);
 	}
 }
