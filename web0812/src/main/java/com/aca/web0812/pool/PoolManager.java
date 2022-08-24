@@ -18,6 +18,7 @@ public class PoolManager extends ConnectionManager{
 	public PoolManager() {
 		try {
 			context=new InitialContext();
+			ds = (DataSource) context.lookup("java:comp/env/jdbc/myoracle");//검색시작
 		} catch (NamingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -29,11 +30,7 @@ public class PoolManager extends ConnectionManager{
 	public Connection getConnection() {
 		Connection con=null;
 		try {
-			ds = (DataSource) context.lookup("java:comp/env/jdbc/myoracle");//검색시작
 			con = ds.getConnection();//새로운 접속이 아니라 기존 풀에 모여있는 Connection을 빌려옴
-		} catch (NamingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
