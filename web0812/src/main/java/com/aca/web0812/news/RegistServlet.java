@@ -1,6 +1,7 @@
 package com.aca.web0812.news;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -13,11 +14,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
+import com.aca.web0812.domain.News;
+import com.aca.web0812.news.model.NewsDAO;
+
 
 /*
  * 뉴스기사 등록 요청을 처리하는 서블릿
  */
 public class RegistServlet extends HttpServlet{
+	NewsDAO newsDAO = new NewsDAO();
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//날아온 파라미터를 받아서, db에 넣기
@@ -25,45 +30,25 @@ public class RegistServlet extends HttpServlet{
 		String title=request.getParameter("title");
 		String writer=request.getParameter("writer");
 		String content=request.getParameter("content");
-		Connection con = null;
-		PreparedStatement pstmt = null;
 		
-		try {
-			InitialContext context=new InitialContext();
-			DataSource ds = (DataSource)context.lookup("java:comp/env/jdbc/myoracle");//JNDI 검색 객체
-			
-			//커넥션풀로부터 Connection 하나를 추출해보자
-			con = ds.getConnection();
-			String sql="insert into news(news_id,title, writer, content) values (seq_news.nextval,?,?,?)";
-			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, title);
-			pstmt.setString(2, writer);
-			pstmt.setString(3, content);
-			
-			int result=pstmt.executeUpdate();//쿼리수행
-			
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			if(con!=null) {
-				try {
-					con.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			if(pstmt!=null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
+		//DTO 담기
+		News news = new News();
+		news.setTitle(title);
+		news.setWriter(writer);
+		news.setContent(content);
+		
+		int result = newsDAO.insert(news);
+		
+		response.setContentType("text/html;charset=utf-8");
+		PrintWriter out= response.getWriter();
+		out.print("<script>");
+		if(result==0) {
+			out.print("alert('등록 실패');");
+			out.print("history.back();");			
+		}else {
+			out.print("alert('등록 성공');");
+			out.print("location.href='/news/list.jsp'");
 		}
-		
+		out.print("</script>");
 	}
 }

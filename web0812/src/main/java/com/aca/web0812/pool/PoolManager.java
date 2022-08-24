@@ -14,6 +14,17 @@ public class PoolManager extends ConnectionManager{
 	InitialContext context;//JNDI 검색 객체
 	DataSource ds;
 	
+	
+	public PoolManager() {
+		try {
+			context=new InitialContext();
+		} catch (NamingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
 	@Override
 	public Connection getConnection() {
 		Connection con=null;
