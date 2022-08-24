@@ -80,15 +80,36 @@ public class NewsDAO {
 		}
 		return list;
 	}
-	public void select() {
+	public News select(int news_id) {
 		Connection con =null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		List<News> list= new ArrayList<News>();
+		News news=null;//return 하려고
 		
 		con = manager.getConnection();
 		String sql="select * from news where news_id=?";
-		
+		try {
+			pstmt=con.prepareStatement(sql);
+			pstmt.setInt(1, news_id);
+			rs= pstmt.executeQuery();
+			
+			if(rs.next()) {//레코드가 있다면
+				news = new News();
+				news.setNews_id(rs.getInt("news_id"));
+				news.setTitle(rs.getString("title"));
+				news.setWriter(rs.getString("writer"));
+				news.setContent(rs.getString("content"));
+				news.setRegdate(rs.getString("regdate"));
+				news.setHit(rs.getInt("hit"));
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			manager.freeConnection(con, pstmt, rs);
+		}
+		return news;
 	}
 	//update
 	public void update() {
