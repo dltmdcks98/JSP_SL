@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.aca.web0812.domain.Comments;
+import com.aca.web0812.domain.News;
 import com.aca.web0812.model.CommentsDAO;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -21,11 +22,18 @@ public class CommentsRegist extends HttpServlet{
 		request.setCharacterEncoding("utf-8");
 		String detail = request.getParameter("detail");
 		String author = request.getParameter("author");
+		String news_id = request.getParameter("news_id");
 		
 		//DTO 
 		Comments comments = new Comments();//Empty 객체 생성
 		comments.setDetail(detail);
 		comments.setAuthor(author);
+		
+		//객체변수이므로 메모리에 올려야함
+		News news = new News();
+		news.setNews_id(Integer.parseInt(news_id));
+		
+		comments.setNews(news);//comments DTO안에 News DTO 넣기 자식이 부모를 has a로 보유
 		
 		//DAO : DAO는 테이블 별로 1:1 대응
 		commentsDAO.insert(comments);
@@ -37,6 +45,9 @@ public class CommentsRegist extends HttpServlet{
 		
 		//클라이언트에게 등록과 동시에 지금까지 누적된 댓글 목록을 보낸다.
 		//json표기를 문자열로 처리할 경우 너무 번거로우니 외부 라이브러리(GSON)를 이용한다.
+		
+		//목록 가져오기 
+		
 		Gson gson = new Gson();
 		String json =gson.toJson(comments);
 		out.print(json);

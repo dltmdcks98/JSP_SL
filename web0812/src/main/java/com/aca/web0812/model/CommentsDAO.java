@@ -3,6 +3,8 @@ package com.aca.web0812.model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.aca.web0812.domain.Comments;
 import com.aca.web0812.pool.ConnectionManager;
@@ -22,11 +24,12 @@ public class CommentsDAO {
 		 int result =0;
 		 
 		 con=manager.getConnection();
-		 String sql="INSERT INTO comments(comments_id, detail, author) VALUES(seq_comments,nextval, ?,?)";
+		 String sql="INSERT INTO comments(comments_id, detail, author, news_id) VALUES(seq_comments,nextval, ?,?,?)";
 		 try {
 			pstmt=con.prepareStatement(sql);
 			pstmt.setString(1, comments.getDetail());
 			pstmt.setString(2, comments.getAuthor());
+			pstmt.setInt(3, comments.getNews().getNews_id());//News객체로 등록했기 때문에 2번 치고 들어가야함
 			result=pstmt.executeUpdate();
 			
 		} catch (SQLException e) {
@@ -38,4 +41,14 @@ public class CommentsDAO {
 		 
 		 return result;
 	 }
+	
+	//모든 레코드 가져오기 
+	public List selectAll() {
+		List list = new ArrayList<>();
+		
+//		String sql = "SELECT * FORM comments WHERE "
+		
+		return list;
+	}
+	
 }

@@ -69,7 +69,7 @@ function regist(){
 	}
 	xhttp.open("POST","/comments/regist");
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhttp.send("detail="+detail.value+"&author="+author.value);//파라미터명=값&파라미터명=값
+	xhttp.send("detail="+detail.value+"&author="+author.value+"&news_id=<%=news_id%>");//파라미터명=값&파라미터명=값
 	
 }
 </script>
