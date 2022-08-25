@@ -76,7 +76,8 @@ tr:nth-child(even) {
 		%>
 		<tr>
 			<td><%=num--%></td>
-			<td><a href="/news/content.jsp?news_id=<%=news.getNews_id()%>"><%= news.getTitle() %></a></td>
+			<td><a href="/news/content.jsp?news_id=<%=news.getNews_id()%>"><%= news.getTitle() %></a>
+			[<%=news.getCnt() %>]</td>
 			<td><%= news.getWriter() %></td>
 			<td><%= news.getRegdate().substring(0,10) %></td>
 			<td><%= news.getHit() %></td>
