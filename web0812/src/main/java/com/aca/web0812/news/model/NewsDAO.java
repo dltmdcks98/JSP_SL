@@ -57,18 +57,42 @@ public class NewsDAO {
 		List<News> list = new ArrayList<News>();
 		
 		con=manager.getConnection();
-		String sql="select * from news order by news_id desc";
+		
+		//일단 메모리상에 생성된 스트링은 절대 수정이 불가능한 불변(immutable)의 특징을 가지므로
+		//아래와 같이 String을 대상으로 누적시키거나 반복문을 돌릴경우 선능에 문제가 발생한다.
+		//해결책=> 수정 가능한 버퍼처리된 String객체(StringBuilder,StringBuffer)를 사용
+		/*String sql = "";
+		sql+="SELECT news_id, title ,writer ,regdate ,hit, COUNT(nid) as cnt";  
+		sql+=" FROM"; 
+		sql+="(";
+		sql+="SELECT n.news_id AS news_id,title ,writer ,regdate ,hit, c.news_id  AS nid"; 
+		sql+=	" FROM news n LEFT OUTER JOIN  comments c"; 
+		sql+=	" ON n.news_id =c.news_id";
+		sql+=") GROUP BY news_id, title ,writer, regdate ,hit";
+		*/
+		
+		StringBuffer sb = new StringBuffer();
+		sb.append("SELECT news_id, title ,writer ,regdate ,hit, COUNT(nid) as cnt");
+		sb.append(" FROM");
+		sb.append("(");
+		sb.append("SELECT n.news_id AS news_id,title ,writer ,regdate ,hit, c.news_id  AS nid");
+		sb.append(" FROM news n LEFT OUTER JOIN  comments c");
+		sb.append(" ON n.news_id =c.news_id");
+		sb.append(") GROUP BY news_id, title ,writer, regdate ,hit");
+		
+		System.out.println(sb.toString());
+		
 		try {
-			pstmt=con.prepareStatement(sql);
+			pstmt=con.prepareStatement(sb.toString());
 			rs=pstmt.executeQuery();
 			while(rs.next()) {
 				News news = new News();
 				news.setNews_id(rs.getInt("news_id"));
 				news.setTitle(rs.getString("title"));
 				news.setWriter(rs.getString("writer"));
-				news.setContent(rs.getString("content"));
 				news.setRegdate(rs.getString("regdate"));
 				news.setHit(rs.getInt("hit"));
+				news.setCnt(rs.getInt("cnt"));
 				
 				list.add(news);
 			}
