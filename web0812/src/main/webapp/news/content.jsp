@@ -55,6 +55,7 @@ input[type=button]:hover {
 .writer-style{width:10%}
 .regdate-style{width:10%}
 </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
 //댓글 목록 출력
 function showCommentsListByString(jsonArray){//댓글이 json형태로 넘겨짐
@@ -129,9 +130,22 @@ function regist(){
 	xhttp.send("detail="+detail.value+"&author="+author.value+"&news_id=<%=news_id%>");//파라미터명=값&파라미터명=값
 	
 }
+//비동기방식으로 댓글 목록 가져오기
+function getComments(){
+	$.ajax({
+		url:"/comments/list",
+		success:function(result){//result== responseText
+			showCommentsListByDom();
+		}
+	});
+}
+//페이지가 로딩될때 댓글 달기
+function init(){
+	
+}
 </script>
 </head>
-<body>
+<body onLoad="init()">
 
 <h3>뉴스기사 상세보기</h3>
 
