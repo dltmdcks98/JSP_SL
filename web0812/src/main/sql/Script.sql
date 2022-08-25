@@ -24,3 +24,16 @@ START WITH 1;
 CREATE SEQUENCE seq_comments
 INCREMENT BY 1
 START WITH 1;
+
+
+
+SELECT deptno, COUNT(*) FROM (
+	SELECT ENAME,sal,emp.DEPTNO AS deptno FROM emp,dept WHERE emp.DEPTNO = dept.DEPTNO
+) GROUP BY deptno
+
+
+
+SELECT deptno, COUNT(deptno) FROM (
+	SELECT d.deptno FROM DEPT d LEFT OUTER JOIN EMP e 
+	ON e.DEPTNO = d.DEPTNO 
+) GROUP BY deptno
