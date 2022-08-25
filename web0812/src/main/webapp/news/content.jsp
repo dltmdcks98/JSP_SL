@@ -56,6 +56,61 @@ input[type=button]:hover {
 .regdate-style{width:10%}
 </style>
 <script>
+//댓글 목록 출력
+function showCommentsListByString(jsonArray){//댓글이 json형태로 넘겨짐
+	console.log("넘겨받은 데이터의 배열크기는 ",jsonArray.lenth);
+	//넘어온 데이터가 문자열이므로, 객체처럼 사용할 수 없는 상태
+	var data = JSON.parse(jsonArray);
+	console.log("json객체 수는",data.length);
+	
+	//div안의 컨텐츠를 js를 DOM을 이용하여 동적으로 출력해본다.
+	var commentsList = document.getElementById("comments-list");//div
+	commentsList.innerHTML="";
+	//문자열로 취급하는 방법
+	var tag="";
+	for(var i=0; i<data.length;i++){
+		tag+="<div class=\"title-style\">짜파게티 맛있엉</div>";
+		tag+="<div class=\"writer-style\">리얼개미</div>";
+	  	tag+="<div class=\"regdate-style\">리얼개미</div>"
+	}
+	console.log(tag);
+	commentsList.innerHTML=tag;	
+}
+
+//DOM객체로 처리하는 방법
+function showCommentsListByDom(jsonArray){
+	
+	var data = JSON.parse(jsonArray);
+	var commentsList = document.getElementById("comments-list");
+	
+	//출력전에 기존 요소들을 삭제
+	commentsList.innerHTML="";
+	
+	
+	for(var i=0; i<data.length;i++){
+		var json = data[i];//배열에 들어있는 한건의 댓글 객체
+		var div1=document.createElement("div");//title-style
+		var div2=document.createElement("div");//writer-style
+		var div3=document.createElement("div");//regdate-style
+		
+		//생성된 DOM 요소에 클래스 적용
+		div1.className="title-style";
+		div2.className="writer-style";
+		div3.className="regdate-style";
+		
+		//div안의 컨텐츠 구성
+		div1.innerText=json.detail;
+		div2.innerText=json.author;
+		div3.innerText=json.writedate.substring(0,10);
+		
+		//조립
+		commentsList.appendChild(div1);//부모요소에 자식 추가
+		commentsList.appendChild(div2);
+		commentsList.appendChild(div3);
+		//이렇게 하다가 react가 나옴	
+	}
+}
+
 function regist(){
 	//비동기
 	var xhttp=new XMLHttpRequest();
@@ -65,8 +120,10 @@ function regist(){
 	xhttp.onreadystatechange=function(){
 		if(this.readyState==4 && this.status==200){
 			console.log("서버가 보낸 json 문자열은",this.responseText);
+			showCommentsListByDom(this.responseText);//출력함수로 정의
 		}
 	}
+	
 	xhttp.open("POST","/comments/regist");
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("detail="+detail.value+"&author="+author.value+"&news_id=<%=news_id%>");//파라미터명=값&파라미터명=값
@@ -96,11 +153,11 @@ function regist(){
   <!-- 댓글 목록 -->
   
   <div id="comments-list">
-  <%for(int i=0; i<10; i++){ %>
+  <!-- 
   	<div class="title-style">짜파게티 맛있엉</div>
   	<div class="writer-style">리얼개미</div>
   	<div class="regdate-style">리얼개미</div>
-  	<%} %>
+  	-->
   </div>
 </div>
 
