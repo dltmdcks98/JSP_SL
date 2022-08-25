@@ -140,7 +140,39 @@ public class NewsDAO {
 		String sql="update news set title=?, writer?, content=? where news_id=?";
 	}
 	//delete
-	public void delete() {
-		String sql="delete news where news_id=?";
+	public int delete(int news_id) {
+		Connection con = null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		int result = 0;
+		
+		con = manager.getConnection();
+		
+		String sql="select * from comments where news_id=?";//자식이 있는지 조회
+		try {
+			pstmt=con.prepareStatement(sql);
+			pstmt.setInt(1, news_id);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {//자식이 있는 경우
+				sql="update news set title='원본이 삭제된 게시물입니다', writer='', content='냉무' where news_id=?";
+				pstmt= con.prepareStatement(sql);
+				pstmt.setInt(1, news_id);
+				result = pstmt.executeUpdate();//수정 실행
+				
+			}else {
+				sql="delete from news where news_id=?";
+				pstmt= con.prepareStatement(sql);
+				pstmt.setInt(1, news_id);
+				result = pstmt.executeUpdate();
+				
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			manager.freeConnection(con, pstmt, rs);
+		}
+		return result;
 	}
 }

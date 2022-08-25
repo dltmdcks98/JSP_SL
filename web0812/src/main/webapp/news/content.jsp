@@ -56,6 +56,7 @@ input[type=button]:hover {
 .regdate-style{width:10%}
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
 <script>
 //댓글 목록 출력
 function showCommentsListByString(jsonArray){//댓글이 json형태로 넘겨짐
@@ -107,8 +108,7 @@ function showCommentsListByDom(jsonArray){
 		//조립
 		commentsList.appendChild(div1);//부모요소에 자식 추가
 		commentsList.appendChild(div2);
-		commentsList.appendChild(div3);
-		//이렇게 하다가 react가 나옴	
+		commentsList.appendChild(div3); //이렇게 하다가 react가 나옴	
 	}
 }
 
@@ -130,18 +130,24 @@ function regist(){
 	xhttp.send("detail="+detail.value+"&author="+author.value+"&news_id=<%=news_id%>");//파라미터명=값&파라미터명=값
 	
 }
-//비동기방식으로 댓글 목록 가져오기
+//비동기방식으로 댓글 목록 가져오기jQuery방식
 function getComments(){
 	$.ajax({
-		url:"/comments/list",
+		url:"/comments/list?news_id=<%=news_id%>",
 		success:function(result){//result== responseText
-			showCommentsListByDom();
+			alert(result);
+			showCommentsListByDom(result);
 		}
 	});
 }
 //페이지가 로딩될때 댓글 달기
 function init(){
-	
+	getComments();
+}
+function del(){
+	if(confirm("삭제하시겠습니까?")){
+		location.href="/news/delete?news_id=<%=news_id%>";//동기방식
+	}
 }
 </script>
 </head>
@@ -157,6 +163,9 @@ function init(){
     
     <input type="button" value="등록" onClick="regist()">
     <input type="button" value="목록" onClick="location.href='/news/list.jsp'">
+    <input type="button" value="수정" onClick="edit();'">
+    <input type="button" value="삭제" onClick="del();'">
+    
   </form>
   
   <form name="form2">

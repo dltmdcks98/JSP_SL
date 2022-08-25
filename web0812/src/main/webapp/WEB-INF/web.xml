@@ -53,4 +53,24 @@
       <servlet-name>commentsRegist</servlet-name>
       <url-pattern>/comments/regist</url-pattern>
    </servlet-mapping>
+   
+   	<servlet>
+   <servlet-name>commentsList</servlet-name>
+   <servlet-class>com.aca.web0812.news.CommentsList</servlet-class>
+   </servlet>
+   
+   <servlet-mapping>
+      <servlet-name>commentsList</servlet-name>
+      <url-pattern>/comments/list</url-pattern>
+   </servlet-mapping>
+   
+   	<servlet>
+   <servlet-name>deleteServlet</servlet-name>
+   <servlet-class>com.aca.web0812.news.DeleteServlet</servlet-class>
+   </servlet>
+   
+   <servlet-mapping>
+      <servlet-name>deleteServlet</servlet-name>
+      <url-pattern>/news/delete</url-pattern>
+   </servlet-mapping>
 </web-app>
