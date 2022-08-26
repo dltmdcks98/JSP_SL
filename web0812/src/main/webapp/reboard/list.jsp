@@ -1,6 +1,13 @@
+<%@page import="com.aca.web0812.reboard.domain.ReBoard"%>
+<%@page import="java.util.List"%>
+<%@page import="com.aca.web0812.reboard.model.ReBoardDAO"%>
 <%@ page contentType="text/html;charset=UTF-8"%>
+<%! ReBoardDAO reBoardDAO = new ReBoardDAO();%>
 <%
-	int totalRecord =26; //총 레코드 수 
+	List<ReBoard> boardList=reBoardDAO.selectAll();
+
+
+	int totalRecord =boardList.size(); //총 레코드 수 
 	int pageSize=10;//한 페이지당 보여질 레코드 수
 	int totalPage = (int)Math.ceil((float)totalRecord/pageSize);
 	int blockSize = 10;//블록당 보여질 페이지 수 
@@ -34,6 +41,10 @@ th, td {
 tr:nth-child(even) {
 	background-color: #f2f2f2;
 }
+#reply{
+	transform: rotate(180deg);
+	width: 10px;
+}
 </style>
 <%@ include file="/inc/header.jsp" %>
 <script>
@@ -54,13 +65,20 @@ tr:nth-child(even) {
 			<th>등록일</th>
 			<th>조회수</th>
 		</tr>
+		<%for(int i=1; i<=pageSize;i++){ %>
+		<%if(num<1)break; %>
+		<%ReBoard reBoard = boardList.get(curPos++); %>
 		<tr>
-			<td>Jill</td>
-			<td>Smith</td>
-			<td>50</td>
-			<td>50</td>
-			<td>50</td>
+			<td><%=num-- %></td>
+			<td>
+				<a href="/reboard/content.jsp?reboard_id=<%=reBoard.getReboard_id()%>"><%=reBoard.getTitle() %></a>
+				<img src = "/res/images/reply.png" id="reply">
+			</td>
+			<td><%=reBoard.getWriter() %></td>
+			<td><%=reBoard.getRegdate() %></td>
+			<td><%=reBoard.getHit() %></td>
 		</tr>
+		<%} %>
 		<tr>
 			<td colspan="5"><button>글등록</button></td>
 		</tr>
