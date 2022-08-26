@@ -1,27 +1,11 @@
 <%@page import="com.aca.web0812.reboard.model.ReBoardDAO"%>
 <%@page import="com.aca.web0812.reboard.domain.ReBoard"%>
 <%@ page contentType="text/html;charset=UTF-8"%>
+<%@ include file="/inc/result.jsp" %>
 <%! 
 	ReBoardDAO reBoardDAO = new ReBoardDAO(); 
 	
-	public String getMsgURL(String msg, String url){
-		StringBuilder sb= new StringBuilder();
-		 sb.append("<script>");
-		 sb.append("alert("+msg+");");
-		 sb.append("location.href="+url+";");
-		sb.append("</script>");
 	
-		return sb.toString();
-	}
-	public String getMsgBack(String msg){
-		StringBuilder sb= new StringBuilder();
-		 sb.append("<script>");
-		 sb.append("alert("+msg+");");
-		 sb.append("history.back();");
-		sb.append("</script>");
-	
-		return sb.toString();
-	}
 %>
 <%
 	//글쓰기 요청을 처리하는 jsp
