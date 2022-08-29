@@ -39,7 +39,7 @@ input[type=button]:hover {
 </style>
 <script>
 function regist(){
-	form1.action="";
+	form1.action="/board/regist";
 	form1.method="post";
 	form1.submit();
 }

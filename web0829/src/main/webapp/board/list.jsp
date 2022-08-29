@@ -34,7 +34,7 @@ tr:nth-child(even) {
 	<table>
 		<tr>
 			<th width="5%">No</th>
-			<th width="75%">기사제목</th>
+			<th width="75%">제목</th>
 			<th width="5%">작성자</th>
 			<th width="10%">작성일</th>
 			<th width="5%">조회수</th>
