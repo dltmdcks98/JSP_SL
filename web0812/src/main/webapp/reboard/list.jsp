@@ -71,8 +71,10 @@ tr:nth-child(even) {
 		<tr>
 			<td><%=num-- %></td>
 			<td>
+				<%if(reBoard.getDepth()>0){//답변이라면 %>
+				<img src = "/res/images/reply.png" id="reply" style="margin-left:<%=reBoard.getDepth()*20 %>px">
+				<%} %>
 				<a href="/reboard/content.jsp?reboard_id=<%=reBoard.getReboard_id()%>"><%=reBoard.getTitle() %></a>
-				<img src = "/res/images/reply.png" id="reply">
 			</td>
 			<td><%=reBoard.getWriter() %></td>
 			<td><%=reBoard.getRegdate() %></td>
