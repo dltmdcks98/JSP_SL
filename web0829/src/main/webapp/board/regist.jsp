@@ -39,7 +39,7 @@ input[type=button]:hover {
 </style>
 <script>
 function regist(){
-	form1.action="/news/regist";
+	form1.action="";
 	form1.method="post";
 	form1.submit();
 }
@@ -51,11 +51,11 @@ function regist(){
 
 <div class="container">
   <form name="form1">
-    <input type="text" name="title" placeholder="뉴스 제목입력">
-    <input type="text"name="writer" placeholder="기자명 입력">
+    <input type="text" name="title" placeholder="제목입력">
+    <input type="text"name="writer" placeholder="작성자 입력">
     <textarea name="content" placeholder="내용작성" style="height:200px"></textarea>
     <input type="button" value="등록" onClick="regist()">
-    <input type="button" value="목록" onClick="location.href='/news/list.jsp'">
+    <input type="button" value="목록" onClick="location.href='/board/list.jsp'">
   </form>
 </div>
 
