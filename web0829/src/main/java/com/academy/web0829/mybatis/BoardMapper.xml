@@ -9,7 +9,7 @@
   	개발자가 쿼리문에 집중할 수 있고 유지보수성을 올리기 위한 SQL Mapper중 하나인
   	Mybatis 프레임웤을 이용한다...(Hibernate와 mybatis와는 약간의 차이_ 
    -->
-   <insert id="">
+   <insert id="insert">
    		insert into board(title, writer, content) values(#{},#{},#{})
    </insert>
    
