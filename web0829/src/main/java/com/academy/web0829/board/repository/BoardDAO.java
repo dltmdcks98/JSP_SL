@@ -52,11 +52,14 @@ public class BoardDAO {
 	}
 	
 	//수정 
-//	public int update(Board board) {
-//		int result = 0;
-//		SqlSession sqlSessions = configManager.getSqlSession();
-//		
-//
-//		
-//	}
+	public int update(Board board) {
+		int result = 0;
+		SqlSession sqlSessions = configManager.getSqlSession();
+		
+		result =sqlSessions.update("Board.update", board);
+		sqlSessions.commit();
+		configManager.closeSqlSession(sqlSessions);
+		return result;
+		
+	}
 }

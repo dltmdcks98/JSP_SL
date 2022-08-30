@@ -22,4 +22,13 @@
 		<servlet-name>deleteServlet</servlet-name>
 		<url-pattern>/board/delete</url-pattern>
 	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>editServlet</servlet-name>
+		<servlet-class>com.academy.web0829.board.servlet.EditServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>editServlet</servlet-name>
+		<url-pattern>/board/edit</url-pattern>
+	</servlet-mapping>
 </web-app>
