@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 public class Pager {
 	private int totalRecord;//총레코드 수 
-	private int pageSize =0 ;;//페이지당 보여질 레코드 수 
+	private int pageSize =10 ;//페이지당 보여질 레코드 수 
 	private int totalPage;
 	private int blockSize=10;//블럭당 보여질 페이지 수 
 	private int currentPage=1;//처음 들어왔을때
@@ -26,7 +26,7 @@ public class Pager {
 		if(request.getParameter("currentPage")!=null) {
 			currentPage = Integer.parseInt(request.getParameter("currentPage"));
 		}
-		firstPage = (currentPage-1)% blockSize;
+		firstPage = currentPage-(currentPage-1)% blockSize;
 		lastPage = firstPage+(blockSize-1);
 		curPos = (currentPage-1)*pageSize;
 		num = totalRecord-curPos;

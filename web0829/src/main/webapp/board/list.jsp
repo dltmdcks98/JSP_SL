@@ -1,3 +1,4 @@
+<%@page import="com.academy.web0829.domain.Board"%>
 <%@page import="com.academy.web0829.util.Pager"%>
 <%@page import="java.util.List"%>
 <%@page import="com.academy.web0829.board.repository.BoardDAO"%>
@@ -7,7 +8,7 @@
 	Pager pager = new Pager();
 	%>
 <%
-	List boardList = boardDAO.selectAll();
+	List <Board> boardList = boardDAO.selectAll();
 	out.print("게시물 수는 :"+boardList.size());
 	pager.init(boardList, request);//공식 계산 
 	
@@ -51,18 +52,28 @@ tr:nth-child(even) {
 			<th width="10%">작성일</th>
 			<th width="5%">조회수</th>
 		</tr>
-	<%for(int i=1; i<=pageSize; i++){ %>
+		<%
+			int curPos = pager.getCurPos();
+			int num = pager.getNum();
+		%>
+		<%=pager.getPageSize() %>
+	<%for(int i=1; i<=pager.getPageSize(); i++){ %>
+	<% if(num<1)break; %>
+	<%Board board =boardList.get(curPos++); %>
 		<tr>
-			<td>asdf</td>
-			<td><a href="/news/content.jsp?news_id="></a></td>
-			<td></td>
-			<td></td>
-			<td></td>
+			<td><%=num-- %></td>
+			<td><a href="/news/content.jsp?news_id="><%=board.getTitle() %></a></td>
+			<td><%=board.getWriter() %></td>
+			<td><%=board.getRegdate() %></td>
+			<td><%=board.getHit() %></td>
 		</tr>
 	<%} %>
 		<tr>
 			<td colspan="5" style="text-align:center">
-				
+			<%for(int i = pager.getFirstPage();i<=pager.getLastPage();i++){ %>
+			<%if(i>pager.getTotalPage())break; %>
+				[<%=i %>]
+				<%} %>
 			</td>
 		</tr>
 		<tr>
