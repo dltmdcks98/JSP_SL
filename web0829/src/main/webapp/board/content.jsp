@@ -56,7 +56,13 @@ input[type=button]:hover {
 .regdate-style{width:10%}
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
+<script>
+	function del(){
+		if(confirm("삭제하시겠습니까?")){
+			location.href="/board/delete?board_id=<%=board_id%>";//동기방식
+		}
+	}
+</script>
 </head>
 <body >
 
@@ -70,7 +76,7 @@ input[type=button]:hover {
     <input type="button" value="등록" onClick="regist()">
     <input type="button" value="목록" onClick="location.href='/board/list.jsp'">
     <input type="button" value="수정" onClick="edit();'">
-    <input type="button" value="삭제" onClick="del();'">
+    <input type="button" value="삭제" onClick="del();">
     
   </form>
 

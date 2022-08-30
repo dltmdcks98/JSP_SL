@@ -39,4 +39,24 @@ public class BoardDAO {
 		
 		return board;
 	}
+	
+	//삭제
+	public int delete(int board_id) {
+		SqlSession sqlSession = configManager.getSqlSession();
+		int result =0;
+		
+		result = sqlSession.delete("Board.delete",board_id);
+		sqlSession.commit();
+		configManager.closeSqlSession(sqlSession);
+		return result;
+	}
+	
+	//수정 
+//	public int update(Board board) {
+//		int result = 0;
+//		SqlSession sqlSessions = configManager.getSqlSession();
+//		
+//
+//		
+//	}
 }
