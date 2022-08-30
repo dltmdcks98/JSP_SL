@@ -1,6 +1,11 @@
-
+<%@page import="java.util.List"%>
+<%@page import="com.academy.web0829.board.repository.BoardDAO"%>
 <%@ page contentType="text/html;charset=UTF-8"%>
-
+<%! BoardDAO boardDAO = new BoardDAO(); %>
+<%
+	List boardList = boardDAO.selectAll();
+	out.print("게시물 수는 :"+boardList.size());
+%>
 <!DOCTYPE html>
 <html>
 <head>

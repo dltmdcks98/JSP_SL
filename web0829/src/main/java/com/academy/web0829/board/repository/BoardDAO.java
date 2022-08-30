@@ -15,7 +15,7 @@ public class BoardDAO {
 		int result = 0;
 		//여기서 sql문 작성하지 않고 XML에 작성된 쿼리문을 호출 
 //		sqlSession.insert("쿼리문을 넣어놓은  xml파일의 id",DTO);
-		result = sqlSession.insert("babo.insert",board);
+		result = sqlSession.insert("Board.insert",board);
 		sqlSession.commit();
 		configManager.closeSqlSession(sqlSession);
 		return result;
@@ -25,7 +25,7 @@ public class BoardDAO {
 	public List selectAll() {
 		SqlSession sqlSession = configManager.getSqlSession();
 		List list =null;
-		list = sqlSession.selectList("babo.selectAll");
+		list = sqlSession.selectList("Board.selectAll");
 		configManager.closeSqlSession(sqlSession);
 		return list;
 	}
