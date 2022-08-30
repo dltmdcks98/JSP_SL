@@ -1,11 +1,6 @@
-<%@page import="com.aca.web0812.domain.News"%>
-<%@page import="com.aca.web0812.news.model.NewsDAO"%>
+
 <%@ page contentType="text/html;charset=UTF-8"%>
-<%! NewsDAO newsDAO = new NewsDAO();%>
-<%
-	int news_id = Integer.parseInt(request.getParameter("news_id"));
-	News news =newsDAO.select(news_id);
-%>
+
 <!DOCTYPE html>
 <html>
 <head>
