@@ -12,7 +12,13 @@
 	out.print("게시물 수는 :"+boardList.size());
 	pager.init(boardList, request);//공식 계산 
 	
-	
+	//jsp의 내장 객체 중 application 내장 객체의 생명력을 테스트한다.
+	//이름 그대로 application(웹 어플리케이션)은 Tomcat 서버를 가동할때 생성되어 
+	//프로그램이 끝날때 까지 즉 Tomcat 서버를 종료할때까지 생명력을 유지할 수 있다. 
+	//위의 설명이 Application scope
+	application.setAttribute("id", "batman");
+	out.print(application.getAttribute("id"));
+	out.print(application.getAttribute("nick"));
 %>
 <!DOCTYPE html>
 <html>

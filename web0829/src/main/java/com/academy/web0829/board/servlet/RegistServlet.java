@@ -21,6 +21,7 @@ public class RegistServlet extends HttpServlet {
 	BoardDAO boardDAO = new BoardDAO();
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		//파라미터 받기 
 		request.setCharacterEncoding("utf-8");
 		String title = request.getParameter("title");
