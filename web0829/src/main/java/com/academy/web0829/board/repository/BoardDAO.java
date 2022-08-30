@@ -1,5 +1,7 @@
 package com.academy.web0829.board.repository;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 
 import com.academy.web0829.domain.Board;
@@ -17,5 +19,14 @@ public class BoardDAO {
 		sqlSession.commit();
 		configManager.closeSqlSession(sqlSession);
 		return result;
+	}
+	
+	//목록 가져오기 
+	public List selectAll() {
+		SqlSession sqlSession = configManager.getSqlSession();
+		List list =null;
+		list = sqlSession.selectList("babo.selectAll");
+		configManager.closeSqlSession(sqlSession);
+		return list;
 	}
 }

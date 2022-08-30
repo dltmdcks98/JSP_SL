@@ -13,4 +13,10 @@
    		insert into board(title, writer, content) values(#{title},#{writer},#{content})
    </insert>
    
+	<!-- 밑에서의 Board는 자료형을 물어보는것 이 BoardDTO에 멤버 변수가 저장되어있는데 이때 컬럼명과 멤버변수 명이 같아야 맵핑을 해준다.
+	SqlMapper : Mybatis => Sql문과 맵핑해준다 하고 해서 SqlMapper라고 한다.
+	ORMapping : hibernate -> 테이블과 객체를 맵핑 자동으로 쿼리문을 생성해줌 쿼리문을 작성해주지 않음  -->
+   <select id ="selectAll" resultType = "com.academy.web0829.domain.Board">
+   		select board_id, title, writer, content, regdate, hit from board order by board_id desc
+   </select>
 </mapper>

@@ -18,7 +18,8 @@ import com.academy.web0829.board.repository.BoardDAO;
 import com.academy.web0829.domain.Board;
 
 public class RegistServlet extends HttpServlet {
-	BoardDAO boardDAO;
+	BoardDAO boardDAO = new BoardDAO();
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//파라미터 받기 
 		request.setCharacterEncoding("utf-8");
@@ -31,6 +32,18 @@ public class RegistServlet extends HttpServlet {
 		board.setWriter(writer);
 		board.setContent(content);
 		
-
+		int result = boardDAO.insert(board);
+		
+		response.setContentType("text/html;charset=utf-8");
+		PrintWriter out = response.getWriter();
+		out.print("<script>");
+		if(result==0) {
+			out.print("alert('등록실패');");
+			out.print("history.back();");
+		}else {
+			out.print("alert('등록성공');");
+			out.print("location.href='/board/list.jsp';");
+		}
+		out.print("</script>");
 	}
 }
