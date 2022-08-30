@@ -29,4 +29,14 @@ public class BoardDAO {
 		configManager.closeSqlSession(sqlSession);
 		return list;
 	}
+	
+	//한건 가져오기
+	public Board select(int board_id) {
+		SqlSession sqlSession = configManager.getSqlSession();
+		Board board = null;
+		board = sqlSession.selectOne("Board.select", board_id);
+		configManager.closeSqlSession(sqlSession);
+		
+		return board;
+	}
 }

@@ -19,4 +19,9 @@
    <select id ="selectAll" resultType = "Board">
    		select board_id, title, writer, content, regdate, hit from board order by board_id desc
    </select>
+   
+   <!-- 한 데이터 가져오기 -->
+   <select id="select" resultType="Board" parameterType="int">
+   		select board_id, title, writer, content, regdate, hit from board where board_id = #{board_id}
+   </select>
 </mapper>
