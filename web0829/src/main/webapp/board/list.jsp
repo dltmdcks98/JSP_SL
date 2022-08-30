@@ -1,10 +1,17 @@
+<%@page import="com.academy.web0829.util.Pager"%>
 <%@page import="java.util.List"%>
 <%@page import="com.academy.web0829.board.repository.BoardDAO"%>
 <%@ page contentType="text/html;charset=UTF-8"%>
-<%! BoardDAO boardDAO = new BoardDAO(); %>
+<%! 
+	BoardDAO boardDAO = new BoardDAO(); 
+	Pager pager = new Pager();
+	%>
 <%
 	List boardList = boardDAO.selectAll();
 	out.print("게시물 수는 :"+boardList.size());
+	pager.init(boardList, request);//공식 계산 
+	
+	
 %>
 <!DOCTYPE html>
 <html>
@@ -44,15 +51,15 @@ tr:nth-child(even) {
 			<th width="10%">작성일</th>
 			<th width="5%">조회수</th>
 		</tr>
-	
+	<%for(int i=1; i<=pageSize; i++){ %>
 		<tr>
-			<td></td>
+			<td>asdf</td>
 			<td><a href="/news/content.jsp?news_id="></a></td>
 			<td></td>
 			<td></td>
 			<td></td>
 		</tr>
-	
+	<%} %>
 		<tr>
 			<td colspan="5" style="text-align:center">
 				
