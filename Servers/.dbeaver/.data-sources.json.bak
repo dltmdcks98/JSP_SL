@@ -15,11 +15,6 @@
 				"configurationType": "MANUAL",
 				"home": "C:\\oraclexe\\app\\oracle\\product\\11.2.0\\server",
 				"type": "dev",
-				"properties": {
-					"useFetchSizeWithLongColumn": "true",
-					"loginTimeout": "20",
-					"oracle.jdbc.fanEnabled": "false"
-				},
 				"provider-properties": {
 					"show-only-one-schema@": "false",
 					"@dbeaver-check-schema-content@": "false",
@@ -34,11 +29,7 @@
 					"@dbeaver-connection-type@": "BASIC",
 					"@dbeaver-sid-service@": "SERVICE"
 				},
-				"auth-model": "oracle_native",
-				"handlers": {},
-				"bootstrap": {
-					"defaultSchema": "JAVA"
-				}
+				"auth-model": "oracle_native"
 			}
 		}
 	},

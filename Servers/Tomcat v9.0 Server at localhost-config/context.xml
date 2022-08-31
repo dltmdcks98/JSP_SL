@@ -26,11 +26,4 @@
     <!--
     <Manager pathname="" />
     -->
-    <ResourceLink type="javax.sql.DataSource"
-                      name="jdbc/myoracle"
-                      global="jdbc/myoracle" />
-                      
-    <ResourceLink type="javax.sql.DataSource"
-                      name="jdbc/mysql"
-                      global="jdbc/mysql" />
 </Context>

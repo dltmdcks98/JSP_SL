@@ -68,6 +68,6 @@ public class MyHandler extends DefaultHandler {
 
 	@Override
 	public void endDocument() throws SAXException {
-		System.out.println("문서 종료, 총 회원 수 :"+list.size());
+		System.out.println("문서 종료, 총 회원 수 :"+list);
 	}
 }
