@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="Dept">
+<!-- 부서와 관련된 CRUD -->
+<insert id="insert" parameterType="Dept">
+	insert into dept(deptno, dname, loc) values(seq_dept.nextval, #{dname},#{loc})
+</insert>
+
+<!-- 부서 한건 -->
+<select id="select" parameterType="int" resultType="Dept">
+	select * from dept where deptno=#{deptno}
+</select>
+</mapper>

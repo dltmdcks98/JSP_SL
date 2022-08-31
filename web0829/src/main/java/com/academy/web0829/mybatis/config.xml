@@ -5,6 +5,9 @@
 <configuration>
 	<typeAliases>
 		<typeAlias type="com.academy.web0829.domain.Board" alias="Board"/>
+		<typeAlias type="com.academy.web0829.domain.Dept" alias="Dept"/>
+		<typeAlias type="com.academy.web0829.domain.Emp" alias="Emp"/>
+		
 	</typeAliases>
 	<environments default="development">
 		<environment id="development">
@@ -18,5 +21,7 @@
 	</environments>
 	<mappers>
 		<mapper resource="com/academy/web0829/mybatis/BoardMapper.xml" />
+		<mapper resource="com/academy/web0829/mybatis/EmpMapper.xml" />
+		<mapper resource="com/academy/web0829/mybatis/DeptMapper.xml" />
 	</mappers>
 </configuration>

@@ -5,9 +5,11 @@
 	id="WebApp_ID" version="4.0">
 	<display-name>web0829</display-name>
 <!-- web.xml에는 서버 가동과 관련된 이벤트를 제어하는 리스너가 지원된다. -->
+<!-- 
 	<listener>
 		<listener-class>com.academy.web0829.listener.MyListener</listener-class>
 	</listener>
+	 -->
 	<servlet>
 		<servlet-name>registServlet</servlet-name>
 		<servlet-class>com.academy.web0829.board.servlet.RegistServlet</servlet-class>
